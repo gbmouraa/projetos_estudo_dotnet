@@ -1,3 +1,8 @@
 <Solution>
-  <Project Path="ProductClientHub.API/ProductClientHub.API.csproj" Id="24e92255-edb9-4547-b0a2-720f6db5fd71" />
+  <Project Path="ProductClientHub.API/ProductClientHub.API.csproj" Id="24e92255-edb9-4547-b0a2-720f6db5fd71">
+    <BuildDependency Project="ProductClientHub.Communication/ProductClientHub.Communication.csproj" />
+    <BuildDependency Project="ProductClientHub.Exceptions/ProductClientHub.Exceptions.csproj" />
+  </Project>
+  <Project Path="ProductClientHub.Communication/ProductClientHub.Communication.csproj" Id="76717a3e-e9fb-4be7-8176-fb4d3df6024c" />
+  <Project Path="ProductClientHub.Exceptions/ProductClientHub.Exceptions.csproj" Id="bc8cea23-832d-4272-8b9f-a292faa12990" />
 </Solution>
