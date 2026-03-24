@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# ASP.NET environment-specific local settings
+**/appsettings.Development.json
+
 # User-specific files
 *.rsuser
 *.suo

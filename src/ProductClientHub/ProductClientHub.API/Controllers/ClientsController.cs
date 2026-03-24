@@ -1,15 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductClientHub.API.UseCases.Clients.Register;
+using ProductClientHub.Communication.Requests.Clients;
+using ProductClientHub.Communication.Responses;
+using ProductClientHub.Communication.Responses.Clients;
 
 namespace ProductClientHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientsControllerController : ControllerBase
+    public class ClientsController : ControllerBase
     {
         [HttpPost]
-        public IActionResult Register()
+        [ProducesResponseType(typeof(ResponseShortClientJson), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status400BadRequest)]
+        public IActionResult Register([FromBody] RequestClientJson request)
         {
-            return Created();
+            var useCase = new RegisterClientUseCase();
+
+            var response = useCase.Execute(request);
+
+            return Created("", response);
         }
 
         [HttpGet]
