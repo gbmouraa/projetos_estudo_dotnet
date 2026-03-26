@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductClientHub.API.UseCases.Products.Delete;
 using ProductClientHub.API.UseCases.Products.Register;
 using ProductClientHub.Communication.Requests.Products;
 using ProductClientHub.Communication.Responses;
@@ -23,5 +24,19 @@ namespace ProductClientHub.API.Controllers
 
             return Created("", response);
         }
+
+        [HttpDelete]
+        [Route("{productId}")]
+        [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Delete([FromRoute] Guid productId)
+        {
+            var useCase = new DeleteProductUseCase();
+
+            useCase.Execute(productId);
+
+            return NoContent();
+        }
+
     }
 }
