@@ -59,7 +59,7 @@ namespace ProductClientHub.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(typeof(ResponseShortClientJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseClientJson), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status404NotFound)]
         public IActionResult GetById([FromRoute] Guid id)
         {
