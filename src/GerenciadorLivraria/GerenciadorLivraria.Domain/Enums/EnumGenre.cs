@@ -11,7 +11,7 @@ namespace GerenciadorLivraria.Domain.Enums
         Romance,
 
         [EnumMember(Value = "Mistério")]
-        MIsterio,
+        Misterio,
 
         [EnumMember(Value = "Filosofia")]
         Filosofia,

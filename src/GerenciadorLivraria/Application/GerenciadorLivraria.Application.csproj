@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Requests\" />
-    <Folder Include="Responses\" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GerenciadorLivraria.Domain\GerenciadorLivraria.Domain.csproj" />
   </ItemGroup>
 
 </Project>
