@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using GerenciadorLivraria.Application.Book.CreateBook;
-using GerenciadorLivraria.Application.Requests;
+using GerenciadorLivraria.API.Requests.Book;
+using GerenciadorLivraria.API.Responses.Book;
+using GerenciadorLivraria.API.Responses;
 
 namespace GerenciadorLivraria.API.Controllers.Book
 {
@@ -23,10 +25,14 @@ namespace GerenciadorLivraria.API.Controllers.Book
         }
 
         [HttpPost]
+        // adionar exception personalisada
+        [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CreateBookResponseJson), StatusCodes.Status201Created)]
         public ActionResult Create(CreateBookRequestJson request)
         {
             var service = new CreateBookService();
 
+            // criar mapper
             var result = service.Execute(new CreateBookModel
             {
                 Title = request.Title,
@@ -36,7 +42,13 @@ namespace GerenciadorLivraria.API.Controllers.Book
                 Stock = request.Stock,
             });
 
-            return Created(string.Empty, result);
+            var response = new CreateBookResponseJson
+            {
+                Id = result.Id,
+                Title = result.Title
+            };
+
+            return Created(string.Empty, response);
         }
     }
 }
