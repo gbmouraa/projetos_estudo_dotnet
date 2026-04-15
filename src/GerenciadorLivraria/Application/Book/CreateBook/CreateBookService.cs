@@ -1,4 +1,6 @@
-﻿namespace GerenciadorLivraria.Application.Book.CreateBook
+﻿using GerenciadorLivraria.Application.Exceptions;
+
+namespace GerenciadorLivraria.Application.Book.CreateBook
 {
     public class CreateBookService
     {
@@ -9,7 +11,7 @@
             // dbContext
             // var bookEntity
 
-            return new CreateBookResult{ Id = "Um ID", Title = model.Title };
+            return new CreateBookResult { Id = new Guid(), Title = model.Title };
         }
 
         public void Validate(CreateBookModel model)
@@ -19,8 +21,8 @@
 
             if (!result.IsValid)
             {
-                // criar exception persolisada que retorne uma lista de erros
-                throw new Exception("Dados invalidos");
+                var errors = result.Errors.Select(x => x.ErrorMessage).ToList();
+                throw new ErrorOnValidationException(errors);
             }
         }
     }

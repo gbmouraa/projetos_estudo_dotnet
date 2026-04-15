@@ -1,6 +1,6 @@
-﻿namespace GerenciadorLivraria.Application.Book.CreateBook
+﻿namespace GerenciadorLivraria.API.Responses.Book
 {
-    public class CreateBookResult
+    public class CreateBookResponseJson
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;

@@ -1,6 +1,6 @@
 ﻿using GerenciadorLivraria.Domain.Enums;
 
-namespace GerenciadorLivraria.Application.Requests
+namespace GerenciadorLivraria.API.Requests.Book
 {
     public class CreateBookRequestJson
     {
