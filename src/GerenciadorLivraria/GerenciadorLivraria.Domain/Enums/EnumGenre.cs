@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
+// usar para validacao de generos
 namespace GerenciadorLivraria.Domain.Enums
 {
     public enum EnumGenre

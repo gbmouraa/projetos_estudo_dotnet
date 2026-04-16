@@ -25,10 +25,9 @@ namespace GerenciadorLivraria.API.Controllers.Book
         }
 
         [HttpPost]
-        // adionar exception personalisada
         [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(CreateBookResponseJson), StatusCodes.Status201Created)]
-        public ActionResult Create(CreateBookRequestJson request)
+        public ActionResult Create([FromBody] CreateBookRequestJson request)
         {
             var service = new CreateBookService();
 
