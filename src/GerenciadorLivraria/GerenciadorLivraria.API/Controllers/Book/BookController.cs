@@ -26,8 +26,8 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpPost]
         [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CreateBookResponseJson), StatusCodes.Status201Created)]
-        public ActionResult Create([FromBody] CreateBookRequestJson request)
+        [ProducesResponseType(typeof(ResponseCreateBookJson), StatusCodes.Status201Created)]
+        public ActionResult Create([FromBody] RequestCreateBookJson request)
         {
             var service = new CreateBookService();
 
@@ -41,7 +41,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
                 Stock = request.Stock,
             });
 
-            var response = new CreateBookResponseJson
+            var response = new ResponseCreateBookJson
             {
                 Id = result.Id,
                 Title = result.Title

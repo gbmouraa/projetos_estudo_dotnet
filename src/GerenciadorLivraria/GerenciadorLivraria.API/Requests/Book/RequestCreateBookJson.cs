@@ -1,10 +1,12 @@
-﻿namespace GerenciadorLivraria.API.Requests.Book
+﻿using GerenciadorLivraria.Domain.Enums;
+
+namespace GerenciadorLivraria.API.Requests.Book
 {
-    public class CreateBookRequestJson
+    public class RequestCreateBookJson
     {
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
-        public List<string> Genre { get; set; } = new List<string>();
+        public List<EnumGenre> Genre { get; set; } = new List<EnumGenre>();
         public decimal Price { get; set; }
         public int Stock { get; set; }
     }
