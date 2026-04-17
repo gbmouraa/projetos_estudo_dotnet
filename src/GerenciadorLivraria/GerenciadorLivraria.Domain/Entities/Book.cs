@@ -4,7 +4,7 @@ namespace GerenciadorLivraria.Domain.Entities
 {
     public class Book
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public List<EnumGenre> Genre { get; set; } = new List<EnumGenre>();

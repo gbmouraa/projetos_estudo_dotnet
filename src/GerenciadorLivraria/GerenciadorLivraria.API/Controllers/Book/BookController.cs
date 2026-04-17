@@ -19,7 +19,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult GetById([FromRoute] Guid id)
+        public ActionResult GetById([FromRoute] int id)
         {
             return Ok("Success my brudaa");
         }

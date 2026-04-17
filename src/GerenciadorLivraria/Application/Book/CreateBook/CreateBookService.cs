@@ -11,7 +11,7 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
             // dbContext
             // var bookEntity
 
-            return new CreateBookResult { Id = new Guid(), Title = model.Title };
+            return new CreateBookResult { Id = 1, Title = model.Title };
         }
 
         public void Validate(CreateBookModel model)
