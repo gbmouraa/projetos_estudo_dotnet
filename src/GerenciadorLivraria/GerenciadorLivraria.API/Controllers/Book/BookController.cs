@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using GerenciadorLivraria.Application.Book.CreateBook;
-using GerenciadorLivraria.API.Requests.Book;
-using GerenciadorLivraria.API.Responses.Book;
+﻿using GerenciadorLivraria.API.Requests.Book;
 using GerenciadorLivraria.API.Responses;
+using GerenciadorLivraria.API.Responses.Book;
+using GerenciadorLivraria.Application.Book.CreateBook;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorLivraria.API.Controllers.Book
 {
@@ -11,6 +10,13 @@ namespace GerenciadorLivraria.API.Controllers.Book
     [ApiController]
     public class BookController : ControllerBase
     {
+        private readonly ICreateBookService _createBookService;
+
+        public BookController(ICreateBookService createBookService)
+        {
+            _createBookService = createBookService;
+        }
+
         [HttpGet]
         public ActionResult GetAll()
         {
@@ -29,10 +35,8 @@ namespace GerenciadorLivraria.API.Controllers.Book
         [ProducesResponseType(typeof(ResponseCreateBookJson), StatusCodes.Status201Created)]
         public ActionResult Create([FromBody] RequestCreateBookJson request)
         {
-            var service = new CreateBookService();
-
             // criar mapper
-            var result = service.Execute(new CreateBookModel
+            var result = _createBookService.Execute(new CreateBookModel
             {
                 Title = request.Title,
                 Author = request.Author,
