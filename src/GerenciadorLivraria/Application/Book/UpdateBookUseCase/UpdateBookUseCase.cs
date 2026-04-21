@@ -3,18 +3,18 @@ using GerenciadorLivraria.Domain.Enums;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using GerenciadorLivraria.Application.Common.Exceptions;
 
-namespace GerenciadorLivraria.Application.Book.CreateBook
+namespace GerenciadorLivraria.Application.Book.UpdateBook
 {
-    public class CreateBookUseCase
+    public class UpdateBookUseCase
     {
         private readonly GerenciadorLivrariaDbContext _dbContext;
 
-        public CreateBookUseCase(GerenciadorLivrariaDbContext database)
+        public UpdateBookUseCase(GerenciadorLivrariaDbContext database)
         {
             _dbContext = database;
         }
 
-        public CreateBookResponse Execute(BookRequest request)
+        public void Execute(Guid bookId, BookRequest request)
         {
             Validate(request);
 
@@ -23,23 +23,20 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
                                    .Contains((EnumGenre)g.TypeIdentifier))
                                    .ToList();
 
-            // usar mapper
-            BookEntity book = new BookEntity
-            {
-                Id = new Guid(),
-                Title = request.Title,
-                Author = request.Author,
-                Price = request.Price,
-                Stock = request.Stock,
-                Genre = genres,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = null
-            };
+            BookEntity? book = _dbContext.Books.FirstOrDefault(b => b.Id == bookId);
 
-            _dbContext.Add(book);
+            if (book == null)
+                throw new NotFoundException("Livro não encontrado");
+
+            book.Title = request.Title;
+            book.Author = request.Author;
+            book.Genre = genres;
+            book.Price = request.Price;
+            book.Stock = request.Stock;
+            book.UpdatedAt = DateTime.Now;
+
+            _dbContext.Update(book);
             _dbContext.SaveChanges();
-
-            return new CreateBookResponse { Id = book.Id, Title = book.Title };
         }
 
         public void Validate(BookRequest model)

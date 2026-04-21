@@ -15,9 +15,8 @@ namespace GerenciadorLivraria.Application.Book.DeleteBook
 
         public void Execute(Guid requestId)
         {
-            BookEntity? book = _dbContext.Books
-                                         .Where(b => b.Id == requestId)
-                                         .FirstOrDefault();
+            BookEntity? book = _dbContext.Books.FirstOrDefault(b => b.Id == requestId);
+
 
             if (book == null)
                 throw new NotFoundException("Livro não encontrado.");

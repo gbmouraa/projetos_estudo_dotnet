@@ -1,8 +1,8 @@
 ﻿using GerenciadorLivraria.Domain.Enums;
 
-namespace GerenciadorLivraria.Application.Book.CreateBook
+namespace GerenciadorLivraria.Application.Book
 {
-    public class CreateBookRequest
+    public class BookRequest
     {
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;

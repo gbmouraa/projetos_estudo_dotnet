@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace GerenciadorLivraria.Application.Book.CreateBook
+namespace GerenciadorLivraria.Application.Book
 {
-    public class CreateBookValidator : AbstractValidator<CreateBookRequest>
+    public class BookValidator : AbstractValidator<BookRequest>
     {
-        public CreateBookValidator()
+        public BookValidator()
         {
             RuleFor(book => book.Title).NotEmpty().WithMessage("O titulo do livro não pode ser vazio.");
             RuleFor(book => book.Author).NotEmpty().WithMessage("O nome do autor não pode ser vazio.");
