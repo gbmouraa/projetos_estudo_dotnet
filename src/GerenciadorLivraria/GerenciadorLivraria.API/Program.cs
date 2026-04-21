@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
-builder.Services.AddScoped<ICreateBookService, CreateBookService>();
+builder.Services.AddScoped<CreateBookUseCase>();
 
 builder.Services.AddDbContext<GerenciadorLivrariaDbContext>(options =>
 {

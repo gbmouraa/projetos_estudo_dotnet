@@ -10,11 +10,11 @@ namespace GerenciadorLivraria.API.Controllers.Book
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly ICreateBookService _createBookService;
+        private readonly CreateBookUseCase _createBookUseCase;
 
-        public BookController(ICreateBookService createBookService)
+        public BookController(CreateBookUseCase createBookService)
         {
-            _createBookService = createBookService;
+            _createBookUseCase = createBookService;
         }
 
         [HttpGet]
@@ -31,12 +31,12 @@ namespace GerenciadorLivraria.API.Controllers.Book
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ResponseCreateBookJson), StatusCodes.Status201Created)]
-        public ActionResult Create([FromBody] RequestCreateBookJson request)
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CreateBookResponseJson), StatusCodes.Status201Created)]
+        public ActionResult Create([FromBody] CreateBookRequestJson request)
         {
             // criar mapper
-            var result = _createBookService.Execute(new CreateBookModel
+            var result = _createBookUseCase.Execute(new CreateBookRequest
             {
                 Title = request.Title,
                 Author = request.Author,
@@ -45,7 +45,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
                 Stock = request.Stock,
             });
 
-            var response = new ResponseCreateBookJson
+            var response = new CreateBookResponseJson
             {
                 Id = result.Id,
                 Title = result.Title

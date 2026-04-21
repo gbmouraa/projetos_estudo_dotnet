@@ -2,7 +2,7 @@
 
 namespace GerenciadorLivraria.Application.Book.CreateBook
 {
-    public class CreateBookValidator : AbstractValidator<CreateBookModel>
+    public class CreateBookValidator : AbstractValidator<CreateBookRequest>
     {
         public CreateBookValidator()
         {

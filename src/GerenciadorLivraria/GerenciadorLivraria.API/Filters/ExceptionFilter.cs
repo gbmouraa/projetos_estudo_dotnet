@@ -12,7 +12,7 @@ namespace GerenciadorLivraria.API.Filters
             if (context.Exception is GerenciadorLivrariaException gerenciadorLivrariaException)
             {
                 context.HttpContext.Response.StatusCode = (int)gerenciadorLivrariaException.GetHttpStatusCode();
-                context.Result = new ObjectResult(new ResponseErrorMessageJson(gerenciadorLivrariaException.GetErrors()));
+                context.Result = new ObjectResult(new ErrorMessageResponseJson(gerenciadorLivrariaException.GetErrors()));
             }
             else
             {
@@ -23,7 +23,7 @@ namespace GerenciadorLivraria.API.Filters
         private void ThrowUnknowError(ExceptionContext context)
         {
             context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Result = new ObjectResult(new ResponseErrorMessageJson("ERRO DESCONHECIDO"));
+            context.Result = new ObjectResult(new ErrorMessageResponseJson("ERRO DESCONHECIDO"));
         }
     }
 }

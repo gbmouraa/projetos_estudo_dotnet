@@ -5,16 +5,16 @@ using GerenciadorLivraria.Infrastructure.DataBase;
 
 namespace GerenciadorLivraria.Application.Book.CreateBook
 {
-    public class CreateBookService : ICreateBookService
+    public class CreateBookUseCase
     {
         private readonly GerenciadorLivrariaDbContext _dbContext;
 
-        public CreateBookService(GerenciadorLivrariaDbContext database)
+        public CreateBookUseCase(GerenciadorLivrariaDbContext database)
         {
             _dbContext = database;
         }
 
-        public CreateBookResult Execute(CreateBookModel model)
+        public CreateBookResponse Execute(CreateBookRequest model)
         {
             Validate(model);
 
@@ -30,17 +30,17 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
                 Price = model.Price,
                 Stock = model.Stock,
                 Genre = genres,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 UpdatedAt = null
             };
 
             _dbContext.Add(book);
             _dbContext.SaveChanges();
 
-            return new CreateBookResult { Id = book.Id, Title = book.Title };
+            return new CreateBookResponse { Id = book.Id, Title = book.Title };
         }
 
-        public void Validate(CreateBookModel model)
+        public void Validate(CreateBookRequest model)
         {
             var validator = new CreateBookValidator();
             var result = validator.Validate(model);
