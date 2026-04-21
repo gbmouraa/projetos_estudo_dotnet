@@ -2,6 +2,7 @@
 using GerenciadorLivraria.Application.Book;
 using GerenciadorLivraria.Application.Book.CreateBook;
 using GerenciadorLivraria.Application.Book.GetAllBooks;
+using GerenciadorLivraria.Application.Book.GetBookById;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorLivraria.API.Controllers.Book
@@ -12,15 +13,18 @@ namespace GerenciadorLivraria.API.Controllers.Book
     {
         private readonly CreateBookUseCase _createBookUseCase;
         private readonly GetAllBooksUseCase _getAllBooksUseCase;
+        private readonly GetBookByIdUseCase _getBookByIdUseCase;
 
-        public BookController(CreateBookUseCase createBookUseCase, GetAllBooksUseCase getAllBooksUseCase)
+        public BookController(CreateBookUseCase createBookUseCase, GetAllBooksUseCase getAllBooksUseCase, GetBookByIdUseCase getBookByIdUseCase)
         {
             _createBookUseCase = createBookUseCase;
             _getAllBooksUseCase = getAllBooksUseCase;
+            _getBookByIdUseCase = getBookByIdUseCase;
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(List<BookResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
         public ActionResult GetAll()
         {
             var response = _getAllBooksUseCase.Execute();
@@ -29,9 +33,12 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpGet]
         [Route("{id}")]
+        [ProducesResponseType(typeof(BookResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
         public ActionResult GetById([FromRoute] Guid id)
         {
-            return Ok("Success my brudaa");
+            var response = _getBookByIdUseCase.Execute(id);
+            return Ok(response);
         }
 
         [HttpPost]

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace GerenciadorLivraria.Application.Exceptions
+namespace GerenciadorLivraria.Application.Common.Exceptions
 {
     public class ErrorOnValidationException : GerenciadorLivrariaException
     {

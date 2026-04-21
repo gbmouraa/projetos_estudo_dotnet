@@ -1,5 +1,5 @@
 ﻿using GerenciadorLivraria.API.Responses;
-using GerenciadorLivraria.Application.Exceptions;
+using GerenciadorLivraria.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

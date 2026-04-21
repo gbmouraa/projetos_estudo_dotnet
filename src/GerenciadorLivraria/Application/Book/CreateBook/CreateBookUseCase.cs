@@ -1,7 +1,7 @@
-﻿using GerenciadorLivraria.Application.Exceptions;
-using GerenciadorLivraria.Domain.Entities;
+﻿using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Domain.Enums;
 using GerenciadorLivraria.Infrastructure.DataBase;
+using GerenciadorLivraria.Application.Common.Exceptions;
 
 namespace GerenciadorLivraria.Application.Book.CreateBook
 {
@@ -19,8 +19,9 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
             Validate(request);
 
             var genres = _dbContext.Genres
-                .Where(g => request.Genre.Contains((EnumGenre)g.TypeIdentifier))
-                .ToList();
+                                   .Where(g => request.Genre
+                                   .Contains((EnumGenre)g.TypeIdentifier))
+                                   .ToList();
 
             // usar mapper
             BookEntity book = new BookEntity
@@ -48,7 +49,10 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
 
             if (!result.IsValid)
             {
-                var errors = result.Errors.Select(x => x.ErrorMessage).ToList();
+                var errors = result.Errors
+                                   .Select(x => x.ErrorMessage)
+                                   .ToList();
+
                 throw new ErrorOnValidationException(errors);
             }
         }

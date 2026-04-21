@@ -25,7 +25,9 @@ namespace GerenciadorLivraria.Application.Book.GetAllBooks
                 {
                     Title = b.Title,
                     Author = b.Author,
-                    Genre = b.Genre.Select(g => (EnumGenre)g.TypeIdentifier).ToList()
+                    Genre = b.Genre
+                             .Select(g => (EnumGenre)g.TypeIdentifier)
+                             .ToList()
                 }));
             }
 
