@@ -2,6 +2,7 @@ using GerenciadorLivraria.API.Filters;
 using GerenciadorLivraria.Application.Book.CreateBook;
 using GerenciadorLivraria.Application.Book.GetAllBooks;
 using GerenciadorLivraria.Application.Book.GetBookById;
+using GerenciadorLivraria.Application.Book.DeleteBook;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
 builder.Services.AddScoped<CreateBookUseCase>();
 builder.Services.AddScoped<GetAllBooksUseCase>();
 builder.Services.AddScoped<GetBookByIdUseCase>();
+builder.Services.AddScoped<DeleteBookUseCase>();
 
 builder.Services.AddDbContext<GerenciadorLivrariaDbContext>(options =>
 {
