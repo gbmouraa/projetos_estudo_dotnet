@@ -1,146 +1,333 @@
-# README — GerenciadorLivraria
+# GerenciadorLivraria
 
-## 1. Visão geral
+Sistema de gerenciamento de livros construído com **ASP.NET Core 10** seguindo arquitetura em camadas (Layered Architecture) com separação clara entre Domain, Application, Infrastructure e API. Utiliza Entity Framework Core com SQLite como banco de dados.
 
-Projeto em **.NET 10** organizado em camadas para gerenciamento de livros via API REST.  
-A solução segue arquitetura em camadas (layered architecture) com separação clara entre API, Application, Domain e Infrastructure, utilizando Entity Framework Core com SQLite como banco de dados.
+## 📋 Índice
 
-## 2. Stack e dependências
+- [Visão Geral](#visão-geral)
+- [Tecnologias](#tecnologias)
+- [Arquitetura](#arquitetura)
+- [Como Rodar](#como-rodar)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Modelo de Domínio](#modelo-de-domínio)
+- [API REST](#api-rest)
+- [Fluxo de Funcionamento](#fluxo-de-funcionamento)
+- [Tratamento de Erros](#tratamento-de-erros)
+
+## 🎯 Visão Geral
+
+O **GerenciadorLivraria** é uma API REST que permite:
+- ✅ Listar todos os livros
+- ✅ Buscar livro por ID
+- ✅ Criar novo livro
+- ✅ Atualizar livro
+- ✅ Deletar livro
+
+Cada livro possui informações como título, autor, preço, estoque e pode estar associado a múltiplos gêneros.
+
+## 🛠️ Tecnologias
 
 | Camada | Tecnologia |
-|---|---|
-| **API** | ASP.NET Core Web API, Swagger (Swashbuckle), EF Core (registro de DbContext) |
-| **Application** | C#, FluentValidation |
-| **Domain** | C# (entidades e enums) |
-| **Infrastructure** | EF Core + SQLite + Migrations |
+|--------|-----------|
+| **Runtime** | .NET 10 |
+| **Framework Web** | ASP.NET Core |
+| **Banco de Dados** | SQLite |
+| **ORM** | Entity Framework Core 10.0.6 |
+| **Validação** | FluentValidation 12.1.1 |
+| **Documentação API** | Swagger / Swashbuckle 10.1.7 |
 
-### Dependências externas principais:
-- `FluentValidation` — Validação fluente de modelos
-- `Microsoft.EntityFrameworkCore` — ORM para acesso a dados
-- `Microsoft.EntityFrameworkCore.Sqlite` — Provider SQLite
-- `Swashbuckle.AspNetCore` — Documentação automática via Swagger
+### Dependências por Projeto
 
-## 3. Estrutura da solução
+**GerenciadorLivraria.API:**
+- Microsoft.AspNetCore.OpenApi (10.0.5)
+- Microsoft.EntityFrameworkCore (10.0.6)
+- Microsoft.EntityFrameworkCore.Design (10.0.6)
+- Microsoft.EntityFrameworkCore.Tools (10.0.6)
+- Swashbuckle.AspNetCore.SwaggerGen (10.1.7)
+- Swashbuckle.AspNetCore.SwaggerUI (10.1.7)
 
-```
-GerenciadorLivraria.slnx
-├── GerenciadorLivraria.API
-│   ├── Controllers
-│   ├── Filters
-│   ├── Requests
-│   ├── Responses
-│   ├── Data
-│   └── Program.cs
-├── Application
-│   ├── Book
-│   │   ├── Services
-│   │   ├── Validators
-│   │   └── Models
-│   └── Exceptions
-├── GerenciadorLivraria.Domain
-│   ├── Entities
-│   └── Enums
-└── GerenciadorLivraria.Infrastructure
-    ├── Contexts
-    └── Migrations
-```
+**GerenciadorLivraria.Application:**
+- FluentValidation (12.1.1)
+- Microsoft.EntityFrameworkCore (10.0.6)
+- Microsoft.EntityFrameworkCore.Tools (10.0.6)
 
-### Dependências entre projetos:
+**GerenciadorLivraria.Infrastructure:**
+- Microsoft.EntityFrameworkCore (10.0.6)
+- Microsoft.EntityFrameworkCore.Design (10.0.6)
+- Microsoft.EntityFrameworkCore.Sqlite (10.0.6)
+- Microsoft.EntityFrameworkCore.Tools (10.0.6)
+
+**GerenciadorLivraria.Domain:**
+- Microsoft.EntityFrameworkCore.Tools (10.0.6)
+
+## 🏗️ Arquitetura
+
+### Estrutura de Camadas
 
 ```
-GerenciadorLivraria.Domain
-       ↑            ↑
-       │            └─ GerenciadorLivraria.Infrastructure
-       │
-Application ─────────────→ GerenciadorLivraria.Infrastructure
-       ↑
-GerenciadorLivraria.API ─→ GerenciadorLivraria.Infrastructure
+GerenciadorLivraria.API (Apresentação)
+    ↓ depende de
+GerenciadorLivraria.Application (Regras de Negócio)
+    ↓ depende de
+GerenciadorLivraria.Domain (Entidades)
+    ↑ depende de
+GerenciadorLivraria.Infrastructure (Persistência)
 ```
 
-## 4. Modelo de domínio
+### Organização de Pastas
 
-### 4.1 Entidade `BookEntity`
+```
+GerenciadorLivraria/
+├── GerenciadorLivraria.API/
+│   ├── Controllers/
+│   │   └── Book/
+│   │       └── BookController.cs
+│   ├── Filters/
+│   │   └── ExceptionFilter.cs
+│   ├── Responses/
+│   │   └── ErrorMessageResponseJson.cs
+│   ├── Data/                    (pasta para banco de dados)
+│   ├── Program.cs
+│   ├── appsettings.json
+│   └── GerenciadorLivraria.API.csproj
+│
+├── Application/
+│   ├── Book/
+│   │   ├── CreateBook/
+│   │   │   ├── CreateBookUseCase.cs
+│   │   │   └── CreateBookResponse.cs
+│   │   ├── GetAllBooks/
+│   │   │   └── GetAllBooksUseCase.cs
+│   │   ├── GetBookById/
+│   │   │   └── GetBookByIdUseCase.cs
+│   │   ├── DeleteBook/
+│   │   │   └── DeleteBookUseCase.cs
+│   │   ├── UpdateBookUseCase/
+│   │   │   └── UpdateBookUseCase.cs
+│   │   ├── BookRequest.cs
+│   │   ├── BookResponse.cs
+│   │   └── BookValidator.cs
+│   ├── Common/
+│   │   └── Exceptions/
+│   │       ├── GerenciadorLivrariaException.cs
+│   │       ├── ErrorOnValidationException.cs
+│   │       └── NotFoundException.cs
+│   └── GerenciadorLivraria.Application.csproj
+│
+├── GerenciadorLivraria.Domain/
+│   ├── Entities/
+│   │   ├── BookEntity.cs
+│   │   └── GenreEntity.cs
+│   ├── Enums/
+│   │   └── EnumGenre.cs
+│   └── GerenciadorLivraria.Domain.csproj
+│
+├── GerenciadorLivraria.Infrastructure/
+│   ├── DataBase/
+│   │   ├── GerenciadorLivrariaDbContext.cs
+│   │   └── GerenciadorLivrariaDbContextFactory.cs
+│   ├── Migrations/
+│   │   ├── 20260421001658_InitialCreate.cs
+│   │   ├── 20260421001658_InitialCreate.Designer.cs
+│   │   └── GerenciadorLivrariaDbContextModelSnapshot.cs
+│   └── GerenciadorLivraria.Infrastructure.csproj
+│
+├── GerenciadorLivraria.slnx
+└── README.md
+```
+
+## 🚀 Como Rodar
+
+### Pré-requisitos
+
+- **.NET 10 SDK** instalado ([Download](https://dotnet.microsoft.com/download))
+- **Git** (para clonar o repositório)
+
+### Passo 1: Clonar o Repositório
+
+```bash
+git clone https://github.com/seu-usuario/projetos_estudo_dotnet.git
+cd src/GerenciadorLivraria
+```
+
+### Passo 2: Restaurar Dependências
+
+```bash
+dotnet restore
+```
+
+### Passo 3: Compilar a Solução
+
+```bash
+dotnet build GerenciadorLivraria.slnx
+```
+
+### Passo 4: Executar a API
+
+```bash
+dotnet run --project GerenciadorLivraria.API
+```
+
+A API estará disponível em:
+- **HTTP:** `http://localhost:5139`
+- **Swagger UI:** `http://localhost:5139/swagger/index.html`
+
+### Passo 5: Testar os Endpoints (Opcional)
+
+Você pode usar ferramentas como:
+- **Swagger UI** (abrir no navegador)
+- **Postman** ([Download](https://www.postman.com/downloads/))
+- **cURL** (via terminal)
+- **VSCode REST Client** (usar arquivo `.http`)
+
+## 📚 Estrutura do Projeto
+
+### Modelo de Domínio
+
+#### BookEntity
+
+Representa um livro no sistema.
+
+| Campo | Tipo | Obrigatório | Descrição |
+|-------|------|------------|-----------|
+| `Id` | `Guid` | Sim | Identificador único (gerado automaticamente) |
+| `Title` | `string` | Sim | Título do livro |
+| `Author` | `string` | Sim | Autor do livro |
+| `Genre` | `ICollection<GenreEntity>` | Sim | Lista de gêneros (N:N) |
+| `Price` | `decimal` | Sim | Preço do livro (deve ser > 0) |
+| `Stock` | `int` | Sim | Quantidade em estoque (>= 0) |
+| `CreatedAt` | `DateTime` | Sim | Data de criação (preenchida automaticamente) |
+| `UpdatedAt` | `DateTime?` | Não | Data da última atualização |
+
+#### GenreEntity
+
+Representa um gênero literário.
 
 | Campo | Tipo | Descrição |
-|---|---|---|
-| `Id` | `Guid` | Identificador único |
-| `Title` | `string` | Título do livro (obrigatório) |
-| `Author` | `string` | Autor do livro (obrigatório) |
-| `Genre` | `ICollection<Genre>` | Relação N:N com gêneros |
-| `Price` | `decimal` | Preço do livro (obrigatório, > 0) |
-| `Stock` | `int` | Quantidade em estoque (obrigatório) |
-| `CreatedAt` | `DateTime` | Data de criação (somente leitura) |
-| `UpdatedAt` | `DateTime` | Data de última atualização (set privado) |
-
-### 4.2 Entidade `Genre`
-
-| Campo | Tipo | Descrição |
-|---|---|---|
+|-------|------|-----------|
 | `Id` | `Guid` | Identificador único |
 | `Name` | `string` | Nome do gênero |
-| `Books` | `ICollection<BookEntity>` | Relação N:N com livros |
+| `TypeIdentifier` | `int` | Identificador numérico (mapeia para `EnumGenre`) |
+| `Books` | `ICollection<BookEntity>` | Livros associados (N:N) |
 | `CreatedAt` | `DateTime` | Data de criação |
-| `UpdatedAt` | `DateTime` | Data de última atualização |
+| `UpdatedAt` | `DateTime?` | Data da última atualização |
 
-### 4.3 Enum `EnumGenre`
+#### EnumGenre
 
-Valores suportados:
-1. `Romance`
-2. `Filosofia`
-3. `Terror`
-4. `Tecnologia`
+Enum com valores predefinidos de gêneros:
 
-## 5. Persistência (Infrastructure)
-
-- **DbContext:** `GerenciadorLivrariaDbContext` expõe `DbSet<BookEntity>` e `DbSet<Genre>`
-- **Provider:** SQLite via Entity Framework Core
-- **Migrations:** Migration inicial (`InitialCreate`) criando tabelas:
-  - `Books`
-  - `Genres`
-  - `BookGenre` (tabela de junção N:N)
-- **Constraints:** Chaves estrangeiras habilitadas via `PRAGMA foreign_keys = ON` em `OnModelCreating`
-
-## 6. API HTTP
-
-Base route do controller: `api/book`
-
-### 6.1 `GET /api/book`
+```csharp
+public enum EnumGenre
+{
+    Romance = 1,
+    Filosofia = 2,
+    Terror = 3,
+    Tecnologia = 4,
+}
 ```
-Resposta: 200 OK
-Body: "Success my brudaa"
-```
-**Status:** Endpoint placeholder — não implementado
 
-### 6.2 `GET /api/book/{id}`
-```
-Resposta: 200 OK
-Body: "Success my brudaa"
-```
-**Status:** Endpoint placeholder — não implementado
+#### Gêneros Seeded
 
-### 6.3 `POST /api/book`
-Cria um novo livro.
+O banco de dados é populado automaticamente com os gêneros ao criar o banco:
 
-**Request body** (`RequestCreateBookJson`):
+| ID | Name | TypeIdentifier |
+|----|------|----------------|
+| `11111111-1111-1111-1111-111111111111` | Romance | 1 |
+| `22222222-2222-2222-2222-222222222222` | Filosofia | 2 |
+| `33333333-3333-3333-3333-333333333333` | Terror | 3 |
+| `44444444-4444-4444-4444-444444444444` | Tecnologia | 4 |
+
+## 📡 API REST
+
+### Base URL
+```
+http://localhost:5139/api/book
+```
+
+### Endpoints
+
+#### 1. Listar Todos os Livros
+
+```http
+GET /api/book
+```
+
+**Resposta (200 OK):**
+```json
+[
+  {
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "genre": [4]
+  }
+]
+```
+
+**Possíveis Status:**
+- `200 OK` - Lista retornada com sucesso
+
+---
+
+#### 2. Buscar Livro por ID
+
+```http
+GET /api/book/{id}
+```
+
+**Parâmetros:**
+- `id` (path, obrigatório): UUID do livro
+
+**Exemplo:**
+```http
+GET /api/book/550e8400-e29b-41d4-a716-446655440000
+```
+
+**Resposta (200 OK):**
 ```json
 {
   "title": "Clean Code",
   "author": "Robert C. Martin",
-  "genre": [4],
+  "genre": [4]
+}
+```
+
+**Possíveis Status:**
+- `200 OK` - Livro encontrado
+- `404 Not Found` - Livro não encontrado
+
+---
+
+#### 3. Criar Novo Livro
+
+```http
+POST /api/book
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "genre": [1, 4],
   "price": 120.50,
   "stock": 10
 }
 ```
 
-**Resposta de sucesso** (`201 Created`):
+**Parâmetros no Body:**
+- `title` (string, obrigatório): Título do livro
+- `author` (string, obrigatório): Autor do livro
+- `genre` (array de integers, obrigatório): IDs dos gêneros (1-4)
+- `price` (decimal, obrigatório): Preço (> 0)
+- `stock` (integer, obrigatório): Estoque (>= 0)
+
+**Resposta (201 Created):**
 ```json
 {
-  "id": "00000000-0000-0000-0000-000000000001",
+  "id": "550e8400-e29b-41d4-a716-446655440000",
   "title": "Clean Code"
 }
 ```
 
-**Resposta de erro** (`400 Bad Request`):
+**Resposta de Erro (400 Bad Request):**
 ```json
 {
   "errors": [
@@ -149,116 +336,303 @@ Cria um novo livro.
 }
 ```
 
-## 7. Fluxo de criação de livro
-
-1. `BookController.Create` recebe `RequestCreateBookJson`
-2. Controller instancia `CreateBookService` manualmente
-3. Controller mapeia `Title`, `Author`, `Price` e `Stock` para `CreateBookModel`
-4. `CreateBookService.Execute` valida o model via `CreateBookValidator`
-5. Em erro de validação, lança `ErrorOnValidationException`
-6. Sem erros, persiste o livro via EF Core
-7. `ExceptionFilter` padroniza resposta de exceções
-
-## 8. Regras de validação (`CreateBookValidator`)
-
-- ✓ `Title` obrigatório
-- ✓ `Author` obrigatório
-- ✓ `Genre` deve conter ao menos um item
-- ✓ Cada item de `Genre` deve ser valor válido do enum
-- ✓ `Price` deve ser `> 0`
-- ✓ `Stock` não pode ser negativo
-
-### Inconsistências conhecidas:
-- ⚠️ `Genre` não é mapeado no controller → validação de gênero tende a falhar
-- ⚠️ Campo `_database` em `CreateBookService` sem injeção de dependência
-- ⚠️ Alguns erros de validação podem estar com mensagens incorretas
-
-## 9. Tratamento de exceções
-
-Hierarquia de exceções:
-```
-GerenciadorLivrariaException (base)
-├── ErrorOnValidationException (400 Bad Request)
-└── [outras exceções de negócio]
-```
-
-Mapeamento:
-- `ErrorOnValidationException` → `400 Bad Request`
-- Exceções não mapeadas → `500 Internal Server Error` com mensagem genérica
-
-Implementado via `ExceptionFilter` para padronização de respostas.
-
-## 10. Configuração e execução local
-
-### Pré-requisitos:
-- .NET 10 SDK instalado
-
-### Passos para execução:
-
-```bash
-# Restaurar dependências
-dotnet restore
-
-# Build da solução
-dotnet build GerenciadorLivraria.slnx
-
-# Executar API
-dotnet run --project GerenciadorLivraria.API
-```
-
-A API estará disponível em `https://localhost:5000` (ou porta configurada).  
-Swagger está habilitado em ambiente `Development` via `/swagger/index.html`.
-
-### Configuração de banco de dados:
-- String de conexão configurada em `appsettings.json`
-- Banco SQLite criado automaticamente na primeira execução
-- Migrations aplicadas automaticamente via `Program.cs`
-
-## 11. Estado atual do projeto
-
-### ✅ Implementado:
-- Estrutura de projeto em camadas
-- Modelo de domínio (entidades e enums)
-- DbContext com migrations iniciais
-- Controller com endpoint POST básico
-- Validação fluente com FluentValidation
-- Tratamento de exceções com exception filter
-- Swagger/OpenAPI configurado
-
-### ⚠️ Parcialmente implementado:
-- POST /api/book (sem mapeamento completo de gêneros)
-- Injeção de dependência do DbContext
-
-### ❌ Não implementado:
-- GET /api/book (lista todos)
-- GET /api/book/{id} (detalhes)
-- PUT /api/book/{id} (atualizar)
-- DELETE /api/book/{id} (deletar)
-- Testes automatizados
-- Seed de dados
-
-## 12. Próximos passos recomendados
-
-1. **Completar CRUD básico:** Implementar endpoints GET, PUT e DELETE
-2. **Corrigir mapeamento:** Garantir que gêneros sejam corretamente mapeados no fluxo POST
-3. **Injeção de dependência:** Configurar DI apropriadamente para CreateBookService
-4. **Testes:** Adicionar testes unitários e de integração
-5. **Validação:** Revisar e corrigir mensagens de validação
-6. **Documentação API:** Adicionar atributos XML para melhor documentação Swagger
-
-## 13. Referência rápida
-
-```yaml
-Projeto: GerenciadorLivraria
-Linguagem: C#
-Runtime: .NET 10
-Arquitetura: Layered (API → Application → Domain + Infrastructure)
-DB: SQLite via EF Core
-Validação: FluentValidation
-Documentação: Swagger/OpenAPI
-Status: Em desenvolvimento
-```
+**Possíveis Status:**
+- `201 Created` - Livro criado com sucesso
+- `400 Bad Request` - Validação falhou
 
 ---
 
-**Última atualização:** 2026-04-21
+#### 4. Atualizar Livro
+
+```http
+PUT /api/book/{id}
+Content-Type: application/json
+
+{
+  "title": "Clean Code (2ª Edição)",
+  "author": "Robert C. Martin",
+  "genre": [4],
+  "price": 125.00,
+  "stock": 15
+}
+```
+
+**Parâmetros:**
+- `id` (path, obrigatório): UUID do livro
+- Body: mesmo formato de criação
+
+**Resposta (204 No Content):**
+```
+[Sem corpo]
+```
+
+**Possíveis Status:**
+- `204 No Content` - Livro atualizado com sucesso
+- `400 Bad Request` - Validação falhou
+- `404 Not Found` - Livro não encontrado
+
+---
+
+#### 5. Deletar Livro
+
+```http
+DELETE /api/book/{id}
+```
+
+**Parâmetros:**
+- `id` (path, obrigatório): UUID do livro
+
+**Resposta (204 No Content):**
+```
+[Sem corpo]
+```
+
+**Possíveis Status:**
+- `204 No Content` - Livro deletado com sucesso
+- `404 Not Found` - Livro não encontrado
+
+---
+
+### Regras de Validação
+
+A validação é realizada automaticamente ao criar ou atualizar um livro:
+
+| Campo | Regra | Mensagem de Erro |
+|-------|-------|------------------|
+| `Title` | Não pode ser vazio | "O titulo do livro não pode ser vazio." |
+| `Author` | Não pode ser vazio | "O nome do autor não pode ser vazio." |
+| `Genre` | Deve ter pelo menos 1 | "Adicione pelo menos um genero para o livro." |
+| `Genre` | Cada item deve ser válido (1-4) | "O gênero '{PropertyValue}' é inválido." |
+| `Price` | Deve ser > 0 | "Insira um preço válido." |
+| `Stock` | Deve ser >= 0 | "Estoque deve ser maior que zero." |
+
+### Tratamento de Erros
+
+#### Resposta de Erro Padrão
+
+```json
+{
+  "errors": [
+    "Mensagem de erro 1",
+    "Mensagem de erro 2"
+  ]
+}
+```
+
+#### Códigos HTTP
+
+| Status | Significado | Causa |
+|--------|------------|-------|
+| `200` | OK | Requisição bem-sucedida (GET, etc) |
+| `201` | Created | Recurso criado com sucesso |
+| `204` | No Content | Requisição bem-sucedida sem conteúdo (PUT, DELETE) |
+| `400` | Bad Request | Erro de validação |
+| `404` | Not Found | Livro não encontrado |
+| `500` | Internal Server Error | Erro desconhecido no servidor |
+
+## 🔄 Fluxo de Funcionamento
+
+### Fluxo de Criação de Livro (Create)
+
+```
+1. Cliente envia POST /api/book com BookRequest
+                            ↓
+2. BookController.Create recebe a requisição
+                            ↓
+3. Injeta CreateBookUseCase via DI (Program.cs)
+                            ↓
+4. CreateBookUseCase.Execute(BookRequest) é chamado
+                            ↓
+5. Valida BookRequest usando BookValidator
+                            ↓
+6. Se inválido → Lança ErrorOnValidationException
+                            ↓
+7. Se válido → Busca GenreEntities pelo TypeIdentifier
+                            ↓
+8. Cria BookEntity e adiciona ao DbContext
+                            ↓
+9. Chama _dbContext.SaveChanges() para persistir
+                            ↓
+10. Retorna CreateBookResponse com Id e Title
+                            ↓
+11. Controller retorna 201 Created com o response
+```
+
+### Fluxo de Leitura (GetAllBooks/GetBookById)
+
+```
+1. Cliente envia GET /api/book ou GET /api/book/{id}
+                            ↓
+2. BookController.GetAll() ou GetById(id)
+                            ↓
+3. Injeta GetAllBooksUseCase ou GetBookByIdUseCase
+                            ↓
+4. Use case busca livros com Include(b => b.Genre)
+                            ↓
+5. Se não encontrado → Lança NotFoundException
+                            ↓
+6. Se encontrado → Mapeia para BookResponse
+                            ↓
+7. Retorna 200 OK com lista ou objeto único
+```
+
+### Fluxo de Tratamento de Exceções
+
+```
+UseCase/Service executa lógica
+                ↓
+            ┌───┴───┐
+            ↓       ↓
+    GerenciadorLivrariaException   Outras exceções
+            ↓                            ↓
+    ErrorOnValidationException     ExceptionFilter
+    NotFoundException              (ThrowUnknowError)
+            ↓                            ↓
+    ExceptionFilter captura       Retorna 500
+            ↓                       "ERRO DESCONHECIDO"
+    Define StatusCode
+    Retorna ErrorMessageResponseJson
+```
+
+## ❌ Tratamento de Erros
+
+### Hierarquia de Exceções
+
+```csharp
+SystemException
+    ↓
+GerenciadorLivrariaException (base abstrata)
+    ├─ ErrorOnValidationException (400 Bad Request)
+    └─ NotFoundException (404 Not Found)
+```
+
+### Comportamento do ExceptionFilter
+
+O `ExceptionFilter` intercepta todas as exceções não capturadas:
+
+- **Se for `GerenciadorLivrariaException`:**
+  - Define `StatusCode` conforme `GetHttpStatusCode()`
+  - Retorna `ErrorMessageResponseJson` com lista de erros
+
+- **Se for outra exceção:**
+  - Define `StatusCode` como 500
+  - Retorna erro genérico `"ERRO DESCONHECIDO"`
+
+## 🗄️ Banco de Dados
+
+### Configuração
+
+- **Tipo:** SQLite
+- **Localização:** `GerenciadorLivraria.API/Data/GerenciadorLivraria.db`
+- **Criação:** Automática na primeira execução
+- **Migrations:** Aplicadas automaticamente via EF Core
+
+### Tabelas
+
+#### `Books`
+```sql
+CREATE TABLE Books (
+    Id TEXT PRIMARY KEY,
+    Title TEXT NOT NULL,
+    Author TEXT NOT NULL,
+    Price NUMERIC NOT NULL,
+    Stock INTEGER NOT NULL,
+    CreatedAt TEXT NOT NULL,
+    UpdatedAt TEXT NULL
+);
+```
+
+#### `Genres`
+```sql
+CREATE TABLE Genres (
+    Id TEXT PRIMARY KEY,
+    Name TEXT NOT NULL,
+    TypeIdentifier INTEGER NOT NULL,
+    CreatedAt TEXT NOT NULL,
+    UpdatedAt TEXT NULL
+);
+```
+
+#### `BookGenre` (Tabela de Junção N:N)
+```sql
+CREATE TABLE BookGenre (
+    BooksId TEXT NOT NULL,
+    GenreId TEXT NOT NULL,
+    PRIMARY KEY (BooksId, GenreId),
+    FOREIGN KEY (BooksId) REFERENCES Books(Id),
+    FOREIGN KEY (GenreId) REFERENCES Genres(Id)
+);
+```
+
+### Constraints
+
+- Chaves estrangeiras habilitadas via `PRAGMA foreign_keys = ON;`
+- Relacionamento N:N entre Books e Genres
+
+## 📝 Exemplo de Uso com cURL
+
+### Criar Livro
+
+```bash
+curl -X POST http://localhost:5139/api/book \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "genre": [4],
+    "price": 120.50,
+    "stock": 10
+  }'
+```
+
+### Listar Todos os Livros
+
+```bash
+curl -X GET http://localhost:5139/api/book
+```
+
+### Buscar Livro por ID
+
+```bash
+curl -X GET http://localhost:5139/api/book/550e8400-e29b-41d4-a716-446655440000
+```
+
+### Atualizar Livro
+
+```bash
+curl -X PUT http://localhost:5139/api/book/550e8400-e29b-41d4-a716-446655440000 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Clean Code (2ª Edição)",
+    "author": "Robert C. Martin",
+    "genre": [4],
+    "price": 125.00,
+    "stock": 15
+  }'
+```
+
+### Deletar Livro
+
+```bash
+curl -X DELETE http://localhost:5139/api/book/550e8400-e29b-41d4-a716-446655440000
+```
+
+## 🔧 Troubleshooting
+
+### Erro: "Database file is locked"
+**Solução:** Feche qualquer processo que esteja acessando o banco de dados e tente novamente.
+
+### Erro: ".NET 10 SDK not found"
+**Solução:** Instale o .NET 10 SDK do [site oficial](https://dotnet.microsoft.com/download)
+
+### Erro: "Port already in use"
+**Solução:** Mude a porta no `launchSettings.json` ou interrompa o processo usando a porta 5139.
+
+### Swagger não carrega
+**Solução:** Certifique-se que você está em ambiente `Development`. Edite `appsettings.json` se necessário.
+
+---
+
+**Última atualização:** 2026-04-21  
+**Versão:** 1.0.0  
+**Status:** ✅ Funcional
