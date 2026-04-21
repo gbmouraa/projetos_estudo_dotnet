@@ -1,7 +1,7 @@
-﻿using GerenciadorLivraria.API.Requests.Book;
-using GerenciadorLivraria.API.Responses;
-using GerenciadorLivraria.API.Responses.Book;
+﻿using GerenciadorLivraria.API.Responses;
+using GerenciadorLivraria.Application.Book;
 using GerenciadorLivraria.Application.Book.CreateBook;
+using GerenciadorLivraria.Application.Book.GetAllBooks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorLivraria.API.Controllers.Book
@@ -11,16 +11,20 @@ namespace GerenciadorLivraria.API.Controllers.Book
     public class BookController : ControllerBase
     {
         private readonly CreateBookUseCase _createBookUseCase;
+        private readonly GetAllBooksUseCase _getAllBooksUseCase;
 
-        public BookController(CreateBookUseCase createBookService)
+        public BookController(CreateBookUseCase createBookUseCase, GetAllBooksUseCase getAllBooksUseCase)
         {
-            _createBookUseCase = createBookService;
+            _createBookUseCase = createBookUseCase;
+            _getAllBooksUseCase = getAllBooksUseCase;
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<BookResponse>), StatusCodes.Status200OK)]
         public ActionResult GetAll()
         {
-            return Ok("Success my brudaa");
+            var response = _getAllBooksUseCase.Execute();
+            return Ok(response);
         }
 
         [HttpGet]
@@ -32,25 +36,10 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpPost]
         [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(CreateBookResponseJson), StatusCodes.Status201Created)]
-        public ActionResult Create([FromBody] CreateBookRequestJson request)
+        [ProducesResponseType(typeof(CreateBookResponse), StatusCodes.Status201Created)]
+        public ActionResult Create([FromBody] CreateBookRequest request)
         {
-            // criar mapper
-            var result = _createBookUseCase.Execute(new CreateBookRequest
-            {
-                Title = request.Title,
-                Author = request.Author,
-                Genre = request.Genre,
-                Price = request.Price,
-                Stock = request.Stock,
-            });
-
-            var response = new CreateBookResponseJson
-            {
-                Id = result.Id,
-                Title = result.Title
-            };
-
+            var response = _createBookUseCase.Execute(request);
             return Created(string.Empty, response);
         }
     }

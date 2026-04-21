@@ -10,6 +10,5 @@
         {
             Errors = new List<string> { error };
         }
-
     }
 }

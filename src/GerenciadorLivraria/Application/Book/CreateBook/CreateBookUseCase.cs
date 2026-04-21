@@ -14,21 +14,22 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
             _dbContext = database;
         }
 
-        public CreateBookResponse Execute(CreateBookRequest model)
+        public CreateBookResponse Execute(CreateBookRequest request)
         {
-            Validate(model);
+            Validate(request);
 
             var genres = _dbContext.Genres
-                .Where(g => model.Genre.Contains((EnumGenre)g.TypeIdentifier))
+                .Where(g => request.Genre.Contains((EnumGenre)g.TypeIdentifier))
                 .ToList();
 
+            // usar mapper
             BookEntity book = new BookEntity
             {
                 Id = new Guid(),
-                Title = model.Title,
-                Author = model.Author,
-                Price = model.Price,
-                Stock = model.Stock,
+                Title = request.Title,
+                Author = request.Author,
+                Price = request.Price,
+                Stock = request.Stock,
                 Genre = genres,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = null

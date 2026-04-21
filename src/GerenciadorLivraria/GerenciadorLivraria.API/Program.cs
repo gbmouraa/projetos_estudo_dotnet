@@ -1,5 +1,6 @@
 using GerenciadorLivraria.API.Filters;
 using GerenciadorLivraria.Application.Book.CreateBook;
+using GerenciadorLivraria.Application.Book.GetAllBooks;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
 builder.Services.AddScoped<CreateBookUseCase>();
+builder.Services.AddScoped<GetAllBooksUseCase>();
 
 builder.Services.AddDbContext<GerenciadorLivrariaDbContext>(options =>
 {
