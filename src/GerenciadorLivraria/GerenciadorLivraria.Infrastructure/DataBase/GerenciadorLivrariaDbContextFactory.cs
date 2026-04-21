@@ -8,7 +8,7 @@ namespace GerenciadorLivraria.Infrastructure.DataBase
         public GerenciadorLivrariaDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<GerenciadorLivrariaDbContext>();
-            optionsBuilder.UseSqlite("Data Source=\"C:\\Users\\Gabriel\\Documents\\Sqlite\\GerenciadorLivraria.db\"");
+            optionsBuilder.UseSqlite("Data Source=Data/GerenciadorLivraria.db");
 
             return new GerenciadorLivrariaDbContext(optionsBuilder.Options);
         }

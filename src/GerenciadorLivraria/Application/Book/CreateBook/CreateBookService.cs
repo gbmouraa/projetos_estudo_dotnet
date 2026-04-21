@@ -1,5 +1,6 @@
 ﻿using GerenciadorLivraria.Application.Exceptions;
 using GerenciadorLivraria.Domain.Entities;
+using GerenciadorLivraria.Domain.Enums;
 using GerenciadorLivraria.Infrastructure.DataBase;
 
 namespace GerenciadorLivraria.Application.Book.CreateBook
@@ -17,6 +18,10 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
         {
             Validate(model);
 
+            var genres = _dbContext.Genres
+                .Where(g => model.Genre.Contains((EnumGenre)g.TypeIdentifier))
+                .ToList();
+
             BookEntity book = new BookEntity
             {
                 Id = new Guid(),
@@ -24,6 +29,9 @@ namespace GerenciadorLivraria.Application.Book.CreateBook
                 Author = model.Author,
                 Price = model.Price,
                 Stock = model.Stock,
+                Genre = genres,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = null
             };
 
             _dbContext.Add(book);

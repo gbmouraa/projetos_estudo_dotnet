@@ -18,6 +18,11 @@ namespace GerenciadorLivraria.Infrastructure.DataBase
                 new GenreEntity { Id = new Guid("33333333-3333-3333-3333-333333333333"), Name = "Terror", TypeIdentifier = 3 },
                 new GenreEntity { Id = new Guid("44444444-4444-4444-4444-444444444444"), Name = "Tecnologia", TypeIdentifier = 4 }
             );
+
+            modelBuilder.Entity<BookEntity>()
+                        .HasMany(b => b.Genre)
+                        .WithMany(g => g.Books)
+                        .UsingEntity(j => j.ToTable("BookGenre"));
         }
     }
 }

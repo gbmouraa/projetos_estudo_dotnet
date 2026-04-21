@@ -3,7 +3,6 @@ using GerenciadorLivraria.Application.Book.CreateBook;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +19,13 @@ builder.Services.AddScoped<ICreateBookService, CreateBookService>();
 
 builder.Services.AddDbContext<GerenciadorLivrariaDbContext>(options =>
 {
-    var connection = new SqliteConnection("Data Source = \"C:\\Users\\Gabriel\\Documents\\Sqlite\\GerenciadorLivraria.db\"");
+    var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Data", "GerenciadorLivraria.db");
+    var connection = new SqliteConnection($"Data Source={dbPath}");
+
     connection.Open();
 
     using var command = connection.CreateCommand();
+
     command.CommandText = "PRAGMA foreign_keys = ON;";
     command.ExecuteNonQuery();
 

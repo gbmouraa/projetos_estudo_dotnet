@@ -7,6 +7,6 @@
         public int TypeIdentifier { get; set; }
         public ICollection<BookEntity> Books { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

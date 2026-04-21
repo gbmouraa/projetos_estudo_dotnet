@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GerenciadorLivraria.Infrastructure.Migrations
 {
     [DbContext(typeof(GerenciadorLivrariaDbContext))]
-    [Migration("20260419212929_InitialCreate")]
+    [Migration("20260421001658_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace GerenciadorLivraria.Infrastructure.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("BookEntityGenreEntity");
+                    b.ToTable("BookGenre", (string)null);
                 });
 
             modelBuilder.Entity("GerenciadorLivraria.Domain.Entities.BookEntity", b =>
@@ -58,7 +58,7 @@ namespace GerenciadorLivraria.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -82,7 +82,7 @@ namespace GerenciadorLivraria.Infrastructure.Migrations
                     b.Property<int>("TypeIdentifier")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -95,32 +95,28 @@ namespace GerenciadorLivraria.Infrastructure.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Romance",
-                            TypeIdentifier = 1,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            TypeIdentifier = 1
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Filosofia",
-                            TypeIdentifier = 2,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            TypeIdentifier = 2
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Terror",
-                            TypeIdentifier = 3,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            TypeIdentifier = 3
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Tecnologia",
-                            TypeIdentifier = 4,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            TypeIdentifier = 4
                         });
                 });
 
