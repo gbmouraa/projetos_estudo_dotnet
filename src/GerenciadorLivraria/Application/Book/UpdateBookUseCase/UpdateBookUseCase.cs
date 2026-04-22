@@ -2,6 +2,7 @@
 using GerenciadorLivraria.Domain.Enums;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using GerenciadorLivraria.Application.Common.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace GerenciadorLivraria.Application.Book.UpdateBook
 {
@@ -23,7 +24,9 @@ namespace GerenciadorLivraria.Application.Book.UpdateBook
                                    .Contains((EnumGenre)g.TypeIdentifier))
                                    .ToList();
 
-            BookEntity? book = _dbContext.Books.FirstOrDefault(b => b.Id == bookId);
+            BookEntity? book = _dbContext.Books
+                                          .Include(b => b.Genre)
+                                          .FirstOrDefault(b => b.Id == bookId);
 
             if (book == null)
                 throw new NotFoundException("Livro não encontrado");
