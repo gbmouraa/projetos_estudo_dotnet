@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GerenciadorTarefas.Domain\GerenciadorTarefas.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
