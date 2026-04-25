@@ -31,7 +31,9 @@ namespace GerenciadorLivraria.Application.Book.GetBookById
                 Author = book.Author,
                 Genre = book.Genre
                             .Select(g => (EnumGenre)g.TypeIdentifier)
-                            .ToList()
+                            .ToList(),
+                Stock = book.Stock,
+                Price = book.Price,
             };
         }
     }
