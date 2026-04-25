@@ -1,4 +1,5 @@
-﻿using GerenciadorTarefas.Communication.Requests;
+﻿using GerenciadorTarefas.Application.Services.Validators;
+using GerenciadorTarefas.Communication.Requests;
 using GerenciadorTarefas.Communication.Responses;
 using GerenciadorTarefas.Domain.Entities;
 using GerenciadorTarefas.Domain.Enums;
@@ -17,6 +18,8 @@ namespace GerenciadorTarefas.Application.Services
 
         public CreateTaskResponseJson Create(CreateTaskRequestJson request)
         {
+            CreateTaskValidation(request);
+
             TaskEntity task = new()
             {
                 Id = new Guid(),
@@ -37,5 +40,22 @@ namespace GerenciadorTarefas.Application.Services
                 Name = request.Name,
             };
         }
+
+        #region Validators
+
+        private void CreateTaskValidation(CreateTaskRequestJson task)
+        {
+            TaskValidator validator = new();
+
+            var result = validator.Validate(task);
+
+            if (!result.IsValid)
+            {
+                throw new Exception("Dados invalidos");
+            }
+        }
+
+        #endregion
+
     }
 }
