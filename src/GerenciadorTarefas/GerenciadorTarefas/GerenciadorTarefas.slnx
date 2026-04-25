@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="GerenciadorTarefas.API/GerenciadorTarefas.API.csproj" Id="b9d07e60-53c1-47ce-969a-d075e2c9f1ae" />
+  <Project Path="GerenciadorTarefas.Application/GerenciadorTarefas.Application.csproj" Id="833b060f-ebfc-436c-9068-8527d65463b0" />
+  <Project Path="GerenciadorTarefas.Communication/GerenciadorTarefas.Communication.csproj" Id="e18e91c8-9035-47e1-9767-c5bb52430697" />
+  <Project Path="GerenciadorTarefas.Domain/GerenciadorTarefas.Domain.csproj" Id="0384022a-6afc-47d3-8fe9-63592bc0b4ce" />
+  <Project Path="GerenciadorTarefas.Exceptions/GerenciadorTarefas.Exceptions.csproj" Id="dde66778-31dd-402c-8d58-4cee6d07406e" />
+  <Project Path="GerenciadorTarefas.Infrastructure/GerenciadorTarefas.Infrastructure.csproj" Id="c26d266e-4932-49da-a6f9-8a073ae96c1d" />
+</Solution>

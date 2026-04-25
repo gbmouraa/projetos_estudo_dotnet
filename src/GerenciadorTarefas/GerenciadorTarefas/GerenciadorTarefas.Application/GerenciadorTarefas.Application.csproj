@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GerenciadorTarefas.Communication\GerenciadorTarefas.Communication.csproj" />
+    <ProjectReference Include="..\GerenciadorTarefas.Domain\GerenciadorTarefas.Domain.csproj" />
+    <ProjectReference Include="..\GerenciadorTarefas.Exceptions\GerenciadorTarefas.Exceptions.csproj" />
+  </ItemGroup>
+
+</Project>
