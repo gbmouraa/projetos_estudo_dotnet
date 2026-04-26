@@ -53,5 +53,15 @@ namespace GerenciadorTarefas.API.Controllers
             var taskUpdated = _taskService.Update(id, request);
             return Ok(taskUpdated);
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
+        public ActionResult Delete([FromRoute] Guid id)
+        {
+            _taskService.Delete(id);
+            return NoContent();
+        }
     }
 }

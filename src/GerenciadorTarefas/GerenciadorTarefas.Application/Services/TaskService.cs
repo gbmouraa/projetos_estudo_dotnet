@@ -100,6 +100,17 @@ namespace GerenciadorTarefas.Application.Services
             return new UpdateTaskResponseJson { Id = taskId, Name = task.Name };
         }
 
+        public void Delete(Guid taskId)
+        {
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == taskId);
+
+            if (task == null)
+                throw new NotFoundException("Tarefa nao encontrada");
+
+            _dbContext.Remove(task);
+            _dbContext.SaveChanges();
+        }
+
         #endregion
 
 
