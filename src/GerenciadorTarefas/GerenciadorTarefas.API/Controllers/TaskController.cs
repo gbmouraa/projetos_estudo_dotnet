@@ -1,5 +1,6 @@
 using GerenciadorTarefas.Application.Services;
 using GerenciadorTarefas.Communication.Requests;
+using GerenciadorTarefas.Communication.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorTarefas.API.Controllers
@@ -16,8 +17,8 @@ namespace GerenciadorTarefas.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CreateTaskResponseJson), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson),StatusCodes.Status400BadRequest)]
         public ActionResult Create([FromBody] CreateTaskRequestJson request)
         {
             var response = _taskService.Create(request);

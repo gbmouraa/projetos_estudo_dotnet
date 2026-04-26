@@ -3,6 +3,7 @@ using System;
 using GerenciadorTarefas.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GerenciadorTarefas.Infrastructure.Migrations
 {
     [DbContext(typeof(GerenciadorTarefasDbContext))]
-    partial class GerenciadorTarefasDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260425150453_UpdateTaskProp")]
+    partial class UpdateTaskProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.7");
@@ -27,6 +30,7 @@ namespace GerenciadorTarefas.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DueDate")

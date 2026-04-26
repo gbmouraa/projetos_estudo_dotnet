@@ -1,3 +1,4 @@
+using GerenciadorTarefas.API.Filters;
 using GerenciadorTarefas.Application.Services;
 using GerenciadorTarefas.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
 builder.Services.AddScoped<TaskService>();
 

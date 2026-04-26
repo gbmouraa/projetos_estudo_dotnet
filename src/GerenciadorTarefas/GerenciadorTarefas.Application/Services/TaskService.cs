@@ -3,6 +3,7 @@ using GerenciadorTarefas.Communication.Requests;
 using GerenciadorTarefas.Communication.Responses;
 using GerenciadorTarefas.Domain.Entities;
 using GerenciadorTarefas.Domain.Enums;
+using GerenciadorTarefas.Exceptions;
 using GerenciadorTarefas.Infrastructure.Database;
 
 namespace GerenciadorTarefas.Application.Services
@@ -25,7 +26,7 @@ namespace GerenciadorTarefas.Application.Services
                 Id = new Guid(),
                 Name = request.Name,
                 Description = request.Description,
-                Priority = (EnumTaskPriority)request.Priority,
+                Priority = request.Priority,
                 Status = EnumTaskStatus.pending,
                 DueDate = request.DueDate,
                 CreatedAt = DateTime.Now,
@@ -51,7 +52,8 @@ namespace GerenciadorTarefas.Application.Services
 
             if (!result.IsValid)
             {
-                throw new Exception("Dados invalidos");
+                var errors = result.Errors.Select(e => e.ErrorMessage).ToList();
+                throw new ErrorOnValidationException(errors);
             }
         }
 
