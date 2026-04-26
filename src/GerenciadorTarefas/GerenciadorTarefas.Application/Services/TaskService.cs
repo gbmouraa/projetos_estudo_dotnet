@@ -19,9 +19,9 @@ namespace GerenciadorTarefas.Application.Services
 
         #region Metodos
 
-        public CreateTaskResponseJson Create(CreateTaskRequestJson request)
+        public CreateTaskResponseJson Create(TaskRequestJson request)
         {
-            CreateTaskValidation(request);
+            TaskValidation(request);
 
             TaskEntity task = new()
             {
@@ -78,12 +78,34 @@ namespace GerenciadorTarefas.Application.Services
             };
         }
 
+        public UpdateTaskResponseJson Update(Guid taskId, TaskRequestJson request)
+        {
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == taskId);
+
+            if (task == null)
+                throw new NotFoundException("Tarefa nao encontrada");
+
+            TaskValidation(request);
+
+            task.Name = request.Name;
+            task.Description = request.Description;
+            task.Priority = request.Priority;
+            task.Status = request.Status;
+            task.DueDate = request.DueDate;
+            task.UpdatedAt = DateTime.Now;
+
+            _dbContext.Tasks.Update(task);
+            _dbContext.SaveChanges();
+
+            return new UpdateTaskResponseJson { Id = taskId, Name = task.Name };
+        }
+
         #endregion
 
 
         #region Validators
 
-        private void CreateTaskValidation(CreateTaskRequestJson task)
+        private void TaskValidation(TaskRequestJson task)
         {
             TaskValidator validator = new();
 

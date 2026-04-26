@@ -19,7 +19,7 @@ namespace GerenciadorTarefas.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateTaskResponseJson), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status400BadRequest)]
-        public ActionResult Create([FromBody] CreateTaskRequestJson request)
+        public ActionResult Create([FromBody] TaskRequestJson request)
         {
             var response = _taskService.Create(request);
             return Created(string.Empty, response);
@@ -41,6 +41,17 @@ namespace GerenciadorTarefas.API.Controllers
         {
             var tasks = _taskService.GetById(id);
             return Ok(tasks);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(UpdateTaskResponseJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status400BadRequest)]
+        public ActionResult Update([FromRoute] Guid id, [FromBody] TaskRequestJson request)
+        {
+            var taskUpdated = _taskService.Update(id, request);
+            return Ok(taskUpdated);
         }
     }
 }

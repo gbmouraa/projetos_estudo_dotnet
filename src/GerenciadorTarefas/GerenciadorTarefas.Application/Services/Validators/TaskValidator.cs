@@ -3,7 +3,7 @@ using GerenciadorTarefas.Communication.Requests;
 
 namespace GerenciadorTarefas.Application.Services.Validators
 {
-    public class TaskValidator : AbstractValidator<CreateTaskRequestJson>
+    public class TaskValidator : AbstractValidator<TaskRequestJson>
     {
         public TaskValidator()
         {

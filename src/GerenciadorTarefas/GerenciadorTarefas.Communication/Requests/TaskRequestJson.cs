@@ -2,7 +2,7 @@
 
 namespace GerenciadorTarefas.Communication.Requests
 {
-    public class CreateTaskRequestJson
+    public class TaskRequestJson
     {
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
