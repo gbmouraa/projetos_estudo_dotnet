@@ -60,6 +60,24 @@ namespace GerenciadorTarefas.Application.Services
             return tasks;
         }
 
+        public TaskResponseJson GetById(Guid taskId)
+        {
+            var task = _dbContext.Tasks.FirstOrDefault(t => t.Id == taskId);
+
+            if (task == null)
+                throw new NotFoundException("Tarefa nao encontrada");
+
+            return new TaskResponseJson
+            {
+                Id = taskId,
+                Name = task.Name,
+                Description = task.Description,
+                Priority = task.Priority.ToString(),
+                Status = task.Status.ToString(),
+                DueDate = task.DueDate,
+            };
+        }
+
         #endregion
 
 

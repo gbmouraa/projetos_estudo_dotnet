@@ -32,5 +32,15 @@ namespace GerenciadorTarefas.API.Controllers
             var tasks = _taskService.GetAll();
             return Ok(tasks);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(typeof(TaskResponseJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
+        public ActionResult GetById([FromRoute] Guid id)
+        {
+            var tasks = _taskService.GetById(id);
+            return Ok(tasks);
+        }
     }
 }
