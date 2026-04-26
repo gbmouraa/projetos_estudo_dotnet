@@ -18,11 +18,19 @@ namespace GerenciadorTarefas.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(CreateTaskResponseJson), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ErrorMessageResponseJson),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status400BadRequest)]
         public ActionResult Create([FromBody] CreateTaskRequestJson request)
         {
             var response = _taskService.Create(request);
             return Created(string.Empty, response);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<TaskResponseJson>), StatusCodes.Status200OK)]
+        public ActionResult GetAll()
+        {
+            var tasks = _taskService.GetAll();
+            return Ok(tasks);
         }
     }
 }

@@ -17,6 +17,8 @@ namespace GerenciadorTarefas.Application.Services
             _dbContext = dbContext;
         }
 
+        #region Metodos
+
         public CreateTaskResponseJson Create(CreateTaskRequestJson request)
         {
             CreateTaskValidation(request);
@@ -41,6 +43,25 @@ namespace GerenciadorTarefas.Application.Services
                 Name = request.Name,
             };
         }
+
+        public List<TaskResponseJson> GetAll()
+        {
+            var tasks = _dbContext.Tasks
+                                    .Select(t => new TaskResponseJson
+                                    {
+                                        Id = t.Id,
+                                        Name = t.Name,
+                                        Description = t.Description,
+                                        Priority = t.Priority.ToString(),
+                                        Status = t.Status.ToString(),
+                                        DueDate = t.DueDate,
+                                    }).ToList();
+
+            return tasks;
+        }
+
+        #endregion
+
 
         #region Validators
 
