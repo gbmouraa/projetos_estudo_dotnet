@@ -5,6 +5,7 @@
   <Project Path="GerenciadorLivraria.API/GerenciadorLivraria.API.csproj" Id="0a530fc2-4758-446c-8a7a-6dce83aaa515">
     <BuildDependency Project="Application/GerenciadorLivraria.Application.csproj" />
   </Project>
+  <Project Path="GerenciadorLivraria.Communication/GerenciadorLivraria.Communication.csproj" Id="fb88c3f8-21b3-4029-860d-456a88023544" />
   <Project Path="GerenciadorLivraria.Domain/GerenciadorLivraria.Domain.csproj" Id="fc1e3db3-54c4-4297-9f04-7860e4b4f959" />
   <Project Path="GerenciadorLivraria.Infrastructure/GerenciadorLivraria.Infrastructure.csproj" Id="7042fb4c-008c-41ac-b07d-77110df245a2">
     <BuildDependency Project="GerenciadorLivraria.Domain/GerenciadorLivraria.Domain.csproj" />

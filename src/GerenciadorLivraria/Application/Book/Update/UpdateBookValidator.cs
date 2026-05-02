@@ -1,0 +1,15 @@
+﻿using FluentValidation;
+
+namespace GerenciadorLivraria.Application.Book.Update
+{
+    public class UpdateBookValidator : AbstractValidator<UpdateBookCommand>
+    {
+        public UpdateBookValidator()
+        {
+            RuleFor(book => book.Title).NotEmpty().WithMessage("O titulo do livro não pode ser vazio.");
+            RuleFor(book => book.Author).NotEmpty().WithMessage("O nome do autor não pode ser vazio.");
+            RuleFor(book => book.Price).GreaterThan(0).WithMessage("Insira um preço válido.");
+            RuleFor(book => book.Stock).GreaterThanOrEqualTo(0).WithMessage("Estoque deve ser maior que zero.");
+        }
+    }
+}

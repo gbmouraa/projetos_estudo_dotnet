@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\GerenciadorLivraria.Application.csproj" />
+    <ProjectReference Include="..\GerenciadorLivraria.Communication\GerenciadorLivraria.Communication.csproj" />
     <ProjectReference Include="..\GerenciadorLivraria.Infrastructure\GerenciadorLivraria.Infrastructure.csproj" />
   </ItemGroup>
 
