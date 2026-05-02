@@ -1,31 +1,20 @@
 import { useEffect, useState } from "react";
-import { EditBookDialog } from "./edit-book-dialog";
+import { BookItem } from "./book-item";
 import { LoadingSpinner } from "./loading-spinner";
-
-export interface BookInterface {
-  id: string;
-  title: string;
-  author: string;
-  price: number;
-  stock: number;
-}
+import type { Book } from "@/services/books";
+import { bookService } from "@/services/books";
 
 export function BooksList() {
-  const [books, setBooks] = useState<BookInterface[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
 
   async function getBooks() {
     try {
-      const apiUrl = "http://localhost:5139/api/book";
-      const response = await fetch(apiUrl);
-
-      if (!response.ok) {
-        throw new Error("Erro ao buscar livros.");
-      }
-
-      const data: BookInterface[] = await response.json();
+      const response = await bookService.getAll();
+      const data: Book[] = await response.json();
       setBooks(data);
     } catch (ex) {
+      // configurar msg de erro na tela
     } finally {
       setLoading(false);
     }
@@ -38,7 +27,7 @@ export function BooksList() {
   return (
     <section className="flex w-full justify-center">
       {loading ? (
-        <div className="-trasnla fixed top-1/2">
+        <div className="fixed top-1/2">
           <LoadingSpinner text="Carregando Livros" />
         </div>
       ) : books.length > 0 ? (
@@ -47,24 +36,7 @@ export function BooksList() {
           <ul className="flex w-full max-w-7xl flex-wrap gap-6">
             {books.map((b) => (
               <li key={b.id}>
-                {/* TODO: Componentizar Livros */}
-                <div className="border-chart-5 relative w-2xs rounded border border-t-3 border-t-green-400 px-4 py-3">
-                  <p className="font-medium">{b.title}</p>
-                  <p className="text-chart-1 text-xs">{b.author}</p>
-                  <div className="mt-4 flex gap-x-3">
-                    <p className="text-chart-1 text-sm">Preco: R$ {b.price}</p>
-                    <p className="text-chart-1 text-sm">Estoque:{b.stock}</p>
-                    <div className="absolute top-3 right-3">
-                      <EditBookDialog
-                        id={b.id}
-                        author={b.author}
-                        title={b.title}
-                        price={b.price}
-                        stock={b.stock}
-                      />
-                    </div>
-                  </div>
-                </div>
+                <BookItem book={b} />
               </li>
             ))}
           </ul>

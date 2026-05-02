@@ -14,9 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Pencil } from "lucide-react";
 
-import type { BookInterface } from "./books-list";
+import type { Book } from "@/services/books";
 
-export function EditBookDialog({ title, author, price, stock }: BookInterface) {
+export function EditBookDialog({ title, author, price, stock }: Book) {
   return (
     <Dialog>
       <form>
@@ -42,7 +42,7 @@ export function EditBookDialog({ title, author, price, stock }: BookInterface) {
               <Input id="author" name="author" defaultValue={author} />
             </Field>
             <Field>
-              <Label htmlFor="price">Preco</Label>
+              <Label htmlFor="price">Preço</Label>
               <Input id="price" name="price" defaultValue={price} />
             </Field>
             <Field>
