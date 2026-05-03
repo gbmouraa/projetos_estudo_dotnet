@@ -1,12 +1,12 @@
 ﻿namespace GerenciadorLivraria.API.Responses
 {
-    public class ErrorMessageResponseJson
+    public class ErrorMessageResponse
     {
         public List<string> Errors { get; private set; }
 
-        public ErrorMessageResponseJson(List<string> messages) { Errors = messages; }
+        public ErrorMessageResponse(List<string> messages) { Errors = messages; }
 
-        public ErrorMessageResponseJson(string error)
+        public ErrorMessageResponse(string error)
         {
             Errors = new List<string> { error };
         }

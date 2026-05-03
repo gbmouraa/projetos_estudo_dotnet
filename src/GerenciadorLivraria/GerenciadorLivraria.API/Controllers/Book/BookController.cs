@@ -24,7 +24,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpGet]
         [ProducesResponseType(typeof(List<BookResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetAll()
         {
             var response = await _mediator.Send(new GetAllBooksQuery());
@@ -34,7 +34,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
         [HttpGet]
         [Route("{id}")]
         [ProducesResponseType(typeof(BookResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetById([FromRoute] Guid id)
         {
             var response = await _mediator.Send(new GetBookByIdQuery { Id = id });
@@ -42,7 +42,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(RegisterBookResponse), StatusCodes.Status201Created)]
         public async Task<ActionResult> Register([FromBody] RegisterBookRequest request)
         {
@@ -60,7 +60,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpDelete]
         [Route("{id}")]
-        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete([FromRoute] Guid id)
         {
@@ -70,8 +70,8 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpPut]
         [Route("{id}")]
-        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ErrorMessageResponseJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] UpdateBookRequest request)
         {
