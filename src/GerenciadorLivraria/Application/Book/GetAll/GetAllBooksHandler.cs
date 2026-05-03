@@ -20,6 +20,7 @@ namespace GerenciadorLivraria.Application.Book.GetAll
                                    .AsNoTracking()
                                    .Select(b => new BookResponse
                                    {
+                                       Id = b.Id,
                                        Author = b.Author,
                                        Title = b.Title,
                                        Stock = b.Stock,

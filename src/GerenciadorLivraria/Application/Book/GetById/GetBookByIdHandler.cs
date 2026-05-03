@@ -25,6 +25,7 @@ namespace GerenciadorLivraria.Application.Book.GetBookById
 
             return new BookResponse
             {
+                Id = book.Id,
                 Title = book.Title,
                 Author = book.Author,
                 Stock = book.Stock,
