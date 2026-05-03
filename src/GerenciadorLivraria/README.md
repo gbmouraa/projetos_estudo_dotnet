@@ -1,6 +1,6 @@
 # GerenciadorLivraria
 
-Sistema de gerenciamento de livros construído com **ASP.NET Core 10** seguindo arquitetura em camadas (Layered Architecture) com separação clara entre Domain, Application, Infrastructure e API. Utiliza Entity Framework Core com SQLite como banco de dados.
+Sistema de gerenciamento de livros construído com **ASP.NET Core 10** seguindo arquitetura em camadas (Layered Architecture) com padrão CQRS (Command Query Responsibility Segregation) utilizando MediatR. Utiliza Entity Framework Core com SQLite como banco de dados.
 
 ## 📋 Índice
 
@@ -25,12 +25,15 @@ O **GerenciadorLivraria** é uma API REST que permite:
 
 Cada livro possui informações como título, autor, preço, estoque e pode estar associado a múltiplos gêneros.
 
+> **Nota:** O projeto inclui um frontend React (GerenciadorLivraria.FrontEnd) em desenvolvimento para apresentação visual, porém o foco principal do projeto é o backend API.
+
 ## 🛠️ Tecnologias
 
 | Camada | Tecnologia |
 |--------|-----------|
 | **Runtime** | .NET 10 |
 | **Framework Web** | ASP.NET Core |
+| **Padrão de Arquitetura** | CQRS com MediatR |
 | **Banco de Dados** | SQLite |
 | **ORM** | Entity Framework Core 10.0.6 |
 | **Validação** | FluentValidation 12.1.1 |
@@ -39,6 +42,7 @@ Cada livro possui informações como título, autor, preço, estoque e pode esta
 ### Dependências por Projeto
 
 **GerenciadorLivraria.API:**
+- MediatR (12.4.1)
 - Microsoft.AspNetCore.OpenApi (10.0.5)
 - Microsoft.EntityFrameworkCore (10.0.6)
 - Microsoft.EntityFrameworkCore.Design (10.0.6)
@@ -48,8 +52,11 @@ Cada livro possui informações como título, autor, preço, estoque e pode esta
 
 **GerenciadorLivraria.Application:**
 - FluentValidation (12.1.1)
+- MediatR (12.4.1)
 - Microsoft.EntityFrameworkCore (10.0.6)
-- Microsoft.EntityFrameworkCore.Tools (10.0.6)
+
+**GerenciadorLivraria.Communication:**
+- (Camada leve para Requests e Responses)
 
 **GerenciadorLivraria.Infrastructure:**
 - Microsoft.EntityFrameworkCore (10.0.6)
@@ -58,7 +65,7 @@ Cada livro possui informações como título, autor, preço, estoque e pode esta
 - Microsoft.EntityFrameworkCore.Tools (10.0.6)
 
 **GerenciadorLivraria.Domain:**
-- Microsoft.EntityFrameworkCore.Tools (10.0.6)
+- (Camada de entidades, sem dependências externas)
 
 ## 🏗️ Arquitetura
 
@@ -67,12 +74,22 @@ Cada livro possui informações como título, autor, preço, estoque e pode esta
 ```
 GerenciadorLivraria.API (Apresentação)
     ↓ depende de
-GerenciadorLivraria.Application (Regras de Negócio)
+GerenciadorLivraria.Application (Regras de Negócio - CQRS)
     ↓ depende de
 GerenciadorLivraria.Domain (Entidades)
-    ↑ depende de
+    ↓ depende de
 GerenciadorLivraria.Infrastructure (Persistência)
+    ↑
+GerenciadorLivraria.Communication (Requests/Responses)
 ```
+
+### Padrão CQRS com MediatR
+
+O projeto implementa o padrão CQRS (Command Query Responsibility Segregation) utilizando a biblioteca MediatR:
+
+- **Commands** (Write): RegisterBookCommand, UpdateBookCommand, DeleteBookCommand
+- **Queries** (Read): GetAllBooksQuery, GetBookByIdQuery
+- **Handlers**: Processam cada Command/Query separadamente
 
 ### Organização de Pastas
 
@@ -85,34 +102,49 @@ GerenciadorLivraria/
 │   ├── Filters/
 │   │   └── ExceptionFilter.cs
 │   ├── Responses/
-│   │   └── ErrorMessageResponseJson.cs
+│   │   └── ErrorMessageResponse.cs
 │   ├── Data/                    (pasta para banco de dados)
 │   ├── Program.cs
 │   ├── appsettings.json
 │   └── GerenciadorLivraria.API.csproj
 │
-├── Application/
+├── GerenciadorLivraria.Application/
 │   ├── Book/
-│   │   ├── CreateBook/
-│   │   │   ├── CreateBookUseCase.cs
-│   │   │   └── CreateBookResponse.cs
-│   │   ├── GetAllBooks/
-│   │   │   └── GetAllBooksUseCase.cs
-│   │   ├── GetBookById/
-│   │   │   └── GetBookByIdUseCase.cs
-│   │   ├── DeleteBook/
-│   │   │   └── DeleteBookUseCase.cs
-│   │   ├── UpdateBookUseCase/
-│   │   │   └── UpdateBookUseCase.cs
-│   │   ├── BookRequest.cs
-│   │   ├── BookResponse.cs
-│   │   └── BookValidator.cs
+│   │   ├── Register/
+│   │   │   ├── RegisterBookCommand.cs
+│   │   │   ├── RegisterBookHandler.cs
+│   │   │   └── RegisterBookValidator.cs
+│   │   ├── GetAll/
+│   │   │   ├── GetAllBooksQuery.cs
+│   │   │   └── GetAllBooksHandler.cs
+│   │   ├── GetById/
+│   │   │   ├── GetBookByIdQuery.cs
+│   │   │   └── GetBookByIdHandler.cs
+│   │   ├── Update/
+│   │   │   ├── UpdateBookCommand.cs
+│   │   │   ├── UpdateBookHandler.cs
+│   │   │   └── UpdateBookValidator.cs
+│   │   └── Delete/
+│   │       ├── DeleteBookCommand.cs
+│   │       └── DeleteBookHandler.cs
 │   ├── Common/
 │   │   └── Exceptions/
 │   │       ├── GerenciadorLivrariaException.cs
 │   │       ├── ErrorOnValidationException.cs
 │   │       └── NotFoundException.cs
 │   └── GerenciadorLivraria.Application.csproj
+│
+├── GerenciadorLivraria.Communication/
+│   ├── Requests/
+│   │   ├── BaseRequest.cs
+│   │   ├── RegisterBookRequest.cs
+│   │   └── UpdateBookRequest.cs
+│   ├── Responses/
+│   │   ├── BaseResponse.cs
+│   │   ├── BookResponse.cs
+│   │   ├── RegisterBookResponse.cs
+│   │   └── ErrorMessageResponse.cs
+│   └── GerenciadorLivraria.Communication.csproj
 │
 ├── GerenciadorLivraria.Domain/
 │   ├── Entities/
@@ -132,6 +164,17 @@ GerenciadorLivraria/
 │   │   └── GerenciadorLivrariaDbContextModelSnapshot.cs
 │   └── GerenciadorLivraria.Infrastructure.csproj
 │
+├── GerenciadorLivraria.FrontEnd/          (Em desenvolvimento)
+│   ├── src/
+│   │   ├── services/
+│   │   │   ├── api.ts
+│   │   │   └── books.ts
+│   │   └── main.tsx
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   └── README.md
+│
 ├── GerenciadorLivraria.slnx
 └── README.md
 ```
@@ -141,6 +184,7 @@ GerenciadorLivraria/
 ### Pré-requisitos
 
 - **.NET 10 SDK** instalado ([Download](https://dotnet.microsoft.com/download))
+- **Node.js** (para o frontend, opcional)
 - **Git** (para clonar o repositório)
 
 ### Passo 1: Clonar o Repositório
@@ -432,42 +476,56 @@ A validação é realizada automaticamente ao criar ou atualizar um livro:
 
 ## 🔄 Fluxo de Funcionamento
 
-### Fluxo de Criação de Livro (Create)
+### Fluxo CQRS (Command Query Responsibility Segregation)
 
 ```
-1. Cliente envia POST /api/book com BookRequest
+Cliente envia Requisição HTTP
+                ↓
+    ┌───────────┴───────────┐
+    ↓                       ↓
+  GET (Query)          POST/PUT/DELETE
+    ↓                       ↓
+  Query Handler        Command Handler
+    ↓                       ↓
+  MediatR.Send()      MediatR.Send()
+    ↓                       ↓
+  Retorna Dados       Retorna Resultado
+```
+
+### Fluxo de Criação de Livro (RegisterBookCommand)
+
+```
+1. Cliente envia POST /api/book com RegisterBookRequest
                             ↓
-2. BookController.Create recebe a requisição
+2. BookController.Register recebe a requisição
                             ↓
-3. Injeta CreateBookUseCase via DI (Program.cs)
+3. Cria RegisterBookCommand e envia via MediatR
                             ↓
-4. CreateBookUseCase.Execute(BookRequest) é chamado
+4. RegisterBookHandler.Execute() é chamado
                             ↓
-5. Valida BookRequest usando BookValidator
+5. Valida RegisterBookCommand usando RegisterBookValidator
                             ↓
 6. Se inválido → Lança ErrorOnValidationException
                             ↓
-7. Se válido → Busca GenreEntities pelo TypeIdentifier
+7. Se válido → Cria BookEntity e adiciona ao DbContext
                             ↓
-8. Cria BookEntity e adiciona ao DbContext
+8. Chama _dbContext.SaveChanges() para persistir
                             ↓
-9. Chama _dbContext.SaveChanges() para persistir
+9. Retorna RegisterBookResponse com Id e Title
                             ↓
-10. Retorna CreateBookResponse com Id e Title
-                            ↓
-11. Controller retorna 201 Created com o response
+10. Controller retorna 201 Created com o response
 ```
 
-### Fluxo de Leitura (GetAllBooks/GetBookById)
+### Fluxo de Leitura (GetAllBooksQuery/GetBookByIdQuery)
 
 ```
 1. Cliente envia GET /api/book ou GET /api/book/{id}
                             ↓
 2. BookController.GetAll() ou GetById(id)
                             ↓
-3. Injeta GetAllBooksUseCase ou GetBookByIdUseCase
+3. Cria Query e envia via MediatR
                             ↓
-4. Use case busca livros com Include(b => b.Genre)
+4. Query Handler busca livros com Include(b => b.Genre)
                             ↓
 5. Se não encontrado → Lança NotFoundException
                             ↓
@@ -479,7 +537,7 @@ A validação é realizada automaticamente ao criar ou atualizar um livro:
 ### Fluxo de Tratamento de Exceções
 
 ```
-UseCase/Service executa lógica
+Handler executa lógica
                 ↓
             ┌───┴───┐
             ↓       ↓
@@ -633,6 +691,6 @@ curl -X DELETE http://localhost:5139/api/book/550e8400-e29b-41d4-a716-4466554400
 
 ---
 
-**Última atualização:** 2026-04-21  
-**Versão:** 1.0.0  
-**Status:** ✅ Funcional
+**Última atualização:** 2026-05-02  
+**Versão:** 2.0.0  
+**Status:** ✅ Funcional (com CQRS + MediatR)
