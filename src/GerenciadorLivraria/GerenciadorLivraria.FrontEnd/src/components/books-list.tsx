@@ -10,9 +10,8 @@ export function BooksList() {
 
   async function getBooks() {
     try {
-      const response = await bookService.getAll();
-      const data: Book[] = await response.json();
-      setBooks(data);
+      const response = (await bookService.getAll()) as Book[];
+      setBooks(response);
     } catch (ex) {
       // configurar msg de erro na tela
     } finally {

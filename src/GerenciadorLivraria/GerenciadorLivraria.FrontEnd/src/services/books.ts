@@ -11,7 +11,7 @@ export interface Book {
 export const bookService = {
   async getAll() {
     try {
-      const response = await api.get("/books");
+      const response = await api.get("/book");
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar livros:", error);
@@ -20,7 +20,7 @@ export const bookService = {
 
   async getById(id: string) {
     try {
-      const response = await api.get(`/books/${id}`);
+      const response = await api.get(`/book/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Erro ao buscar livro ${id}:`, error);
@@ -29,7 +29,7 @@ export const bookService = {
 
   async create(book: Book) {
     try {
-      const response = await api.post("/livros", book);
+      const response = await api.post("/book", book);
       return response.data;
     } catch (error) {
       console.error("Erro ao criar livro:", error);
