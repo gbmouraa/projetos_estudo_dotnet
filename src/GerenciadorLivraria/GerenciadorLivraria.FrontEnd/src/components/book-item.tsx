@@ -1,3 +1,4 @@
+import { DeleteBookDialog } from "./delete-book-dialog";
 import { EditBookDialog } from "./edit-book-dialog";
 import type { Book } from "@/services/books";
 
@@ -13,13 +14,18 @@ export function BookItem({ book }: BookItemProps) {
       <div className="mt-4 flex gap-x-3">
         <p className="text-chart-1 text-sm">Preco: R$ {book.price}</p>
         <p className="text-chart-1 text-sm">Estoque:{book.stock}</p>
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 right-3 flex gap-x-2">
           <EditBookDialog
             id={book.id}
             author={book.author}
             title={book.title}
             price={book.price}
             stock={book.stock}
+          />
+          <DeleteBookDialog
+            id={book.id!}
+            title={book.title}
+            author={book.author}
           />
         </div>
       </div>
