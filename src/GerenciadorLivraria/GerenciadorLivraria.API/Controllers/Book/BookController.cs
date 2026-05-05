@@ -24,7 +24,7 @@ namespace GerenciadorLivraria.API.Controllers.Book
 
         [HttpGet]
         [ProducesResponseType(typeof(List<BookResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> GetAll()
         {
             var response = await _mediator.Send(new GetAllBooksQuery());

@@ -10,14 +10,16 @@ namespace GerenciadorLivraria.API.Filters
         public void OnException(ExceptionContext context)
         {
             if (context.Exception is GerenciadorLivrariaException gerenciadorLivrariaException)
-            {
-                context.HttpContext.Response.StatusCode = (int)gerenciadorLivrariaException.GetHttpStatusCode();
-                context.Result = new ObjectResult(new ErrorMessageResponse(gerenciadorLivrariaException.GetErrors()));
-            }
+                HandleProjectException(context);
             else
-            {
                 ThrowUnknowError(context);
-            }
+        }
+
+        private void HandleProjectException(ExceptionContext context)
+        {
+            var ex = (GerenciadorLivrariaException)context.Exception;
+            context.HttpContext.Response.StatusCode = (int)ex.GetHttpStatusCode();
+            context.Result = new ObjectResult(new ErrorMessageResponse(ex.GetErrors()));
         }
 
         private void ThrowUnknowError(ExceptionContext context)
