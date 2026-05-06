@@ -13,6 +13,8 @@ import {
 import { Trash } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 import { InputGroupAddon } from "./ui/input-group";
+import { bookService } from "../services/books";
+import { toast } from "sonner";
 
 interface DeleteBookDialogProps {
   id: string;
@@ -23,6 +25,23 @@ interface DeleteBookDialogProps {
 export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const handleDeleteBook = async (bookId: string) => {
+    setLoading(true);
+    try {
+      await bookService.delete(bookId);
+      toast.success(`${title} excluido com sucesso.`);
+      setOpen(false);
+    } catch {
+      toast.warning(
+        "Não foi possível esxluir no momento, tente novamente mais tarde.",
+      );
+      setOpen(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -45,7 +64,7 @@ export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
             <small className="text-chart-1 text-xs">{author}</small>
             <DialogDescription>
               {loading ? (
-                <span>Voce escolheu exluir este livro da sua livaria</span>
+                <span>Você escolheu exluir este livro da sua livaria.</span>
               ) : (
                 <span>Tem certeza que deseja excluir esse livro?</span>
               )}
@@ -59,9 +78,13 @@ export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
             ) : (
               <>
                 <DialogClose asChild>
-                  <Button variant="outline">Cancelar</Button>
+                  <Button type="button" variant="outline">
+                    Cancelar
+                  </Button>
                 </DialogClose>
-                <Button onClick={() => setLoading(!loading)}>Excluir</Button>
+                <Button type="button" onClick={() => handleDeleteBook(id)}>
+                  Excluir
+                </Button>
               </>
             )}
           </DialogFooter>
