@@ -1,27 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { BookItem } from "./book-item";
 import { LoadingSpinner } from "./loading-spinner";
-import type { Book } from "@/services/books";
-import { bookService } from "@/services/books";
+import { BookContext } from "@/context/book-context";
 
 export function BooksList() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  async function getBooks() {
-    try {
-      const response = (await bookService.getAll()) as Book[];
-      setBooks(response);
-    } catch (ex) {
-      // configurar msg de erro na tela
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    getBooks();
-  }, []);
+  const { loading, books } = useContext(BookContext);
 
   return (
     <section className="flex w-full justify-center">
