@@ -4,13 +4,13 @@ import { bookService } from "@/services/books";
 
 interface BookContextProps {
   books: Book[];
-  handleDeleteBook: (id: string) => Promise<void>;
+  deleteBook: (id: string) => Promise<void>;
   loading: boolean;
 }
 
 export const BookContext = createContext<BookContextProps>({
   books: [],
-  handleDeleteBook: async () => {},
+  deleteBook: async () => {},
   loading: false,
 });
 
@@ -38,14 +38,14 @@ export default function BookContextProvider({
     getBooks();
   }, []);
 
-  const handleDeleteBook = async (bookId: string) => {
+  const deleteBook = async (bookId: string) => {
     await bookService.delete(bookId);
     const booksUpdated = books.filter((b) => b.id !== bookId);
     setBooks(booksUpdated);
   };
 
   return (
-    <BookContext.Provider value={{ books, handleDeleteBook, loading }}>
+    <BookContext.Provider value={{ books, deleteBook, loading }}>
       {children}
     </BookContext.Provider>
   );

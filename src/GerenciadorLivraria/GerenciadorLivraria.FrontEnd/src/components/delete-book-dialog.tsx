@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,8 +13,8 @@ import {
 import { Trash } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 import { InputGroupAddon } from "./ui/input-group";
-import { bookService } from "../services/books";
 import { toast } from "sonner";
+import { BookContext } from "../context/book-context";
 
 interface DeleteBookDialogProps {
   id: string;
@@ -26,15 +26,17 @@ export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { deleteBook } = useContext(BookContext);
+
   const handleDeleteBook = async (bookId: string) => {
     setLoading(true);
     try {
-      await bookService.delete(bookId);
+      await deleteBook(bookId);
       toast.success(`${title} excluido com sucesso.`);
       setOpen(false);
     } catch {
       toast.warning(
-        "Não foi possível esxluir no momento, tente novamente mais tarde.",
+        "Não foi possível excluir no momento, tente novamente mais tarde.",
       );
       setOpen(false);
     } finally {
