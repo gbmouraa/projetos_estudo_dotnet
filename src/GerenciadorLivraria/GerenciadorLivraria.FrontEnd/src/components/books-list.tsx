@@ -1,4 +1,4 @@
-import { use, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import type { Book } from "@/services/books";
 import { BookItem } from "./book-item";
 import { LoadingSpinner } from "./loading-spinner";

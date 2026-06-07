@@ -15,18 +15,8 @@ export function BookItem({ book }: BookItemProps) {
         <p className="text-chart-1 text-sm">Preco: R$ {book.price}</p>
         <p className="text-chart-1 text-sm">Estoque:{book.stock}</p>
         <div className="absolute top-3 right-3 flex gap-x-2">
-          <EditBookDialog
-            id={book.id}
-            author={book.author}
-            title={book.title}
-            price={book.price}
-            stock={book.stock}
-          />
-          <DeleteBookDialog
-            id={book.id!}
-            title={book.title}
-            author={book.author}
-          />
+          <EditBookDialog book={book} />
+          <DeleteBookDialog book={book} />
         </div>
       </div>
     </div>

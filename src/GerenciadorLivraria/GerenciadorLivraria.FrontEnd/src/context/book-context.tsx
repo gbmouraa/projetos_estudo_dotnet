@@ -5,12 +5,14 @@ import { bookService } from "@/services/books";
 interface BookContextProps {
   books: Book[];
   deleteBook: (id: string) => Promise<void>;
+  editBook: (id: string, data: Book) => Promise<void>;
   loading: boolean;
 }
 
 export const BookContext = createContext<BookContextProps>({
   books: [],
   deleteBook: async () => {},
+  editBook: async () => {},
   loading: false,
 });
 
@@ -44,8 +46,15 @@ export default function BookContextProvider({
     setBooks(booksUpdated);
   };
 
+  const editBook = async (bookId: string, data: Book) => {
+    await bookService.update(bookId, data);
+    setBooks((currentBooks) =>
+      currentBooks.map((book) => (book.id === bookId ? data : book)),
+    );
+  };
+
   return (
-    <BookContext.Provider value={{ books, deleteBook, loading }}>
+    <BookContext.Provider value={{ books, deleteBook, loading, editBook }}>
       {children}
     </BookContext.Provider>
   );

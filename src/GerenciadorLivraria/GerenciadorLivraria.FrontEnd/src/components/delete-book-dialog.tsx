@@ -14,15 +14,14 @@ import { Trash } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 import { InputGroupAddon } from "./ui/input-group";
 import { toast } from "sonner";
-import { BookContext } from "../context/book-context";
+import { BookContext } from "@/context/book-context";
+import type { Book } from "@/services/books";
 
 interface DeleteBookDialogProps {
-  id: string;
-  title: string;
-  author: string;
+  book: Book;
 }
 
-export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
+export function DeleteBookDialog({ book }: DeleteBookDialogProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +31,7 @@ export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
     setLoading(true);
     try {
       await deleteBook(bookId);
-      toast.success(`${title} excluido com sucesso.`);
+      toast.success(`${book.title} excluido com sucesso.`);
       setOpen(false);
     } catch {
       toast.warning(
@@ -62,8 +61,8 @@ export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
         </DialogTrigger>
         <DialogContent showCloseButton={!loading} className="sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <small className="text-chart-1 text-xs">{author}</small>
+            <DialogTitle>{book.title}</DialogTitle>
+            <small className="text-chart-1 text-xs">{book.author}</small>
             <DialogDescription>
               {loading ? (
                 <span>Você escolheu exluir este livro da sua livaria.</span>
@@ -84,7 +83,10 @@ export function DeleteBookDialog({ id, title, author }: DeleteBookDialogProps) {
                     Cancelar
                   </Button>
                 </DialogClose>
-                <Button type="button" onClick={() => handleDeleteBook(id)}>
+                <Button
+                  type="button"
+                  onClick={() => handleDeleteBook(book.id!)}
+                >
                   Excluir
                 </Button>
               </>
