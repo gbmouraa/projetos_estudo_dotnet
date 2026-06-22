@@ -1,7 +1,6 @@
 using GerenciadorLivraria.API.Filters;
 using GerenciadorLivraria.Application;
 using GerenciadorLivraria.Application.UseCases.Book.Delete;
-using GerenciadorLivraria.Application.UseCases.Book.GetAll;
 using GerenciadorLivraria.Application.UseCases.Book.GetById;
 using GerenciadorLivraria.Application.UseCases.Book.Register;
 using GerenciadorLivraria.Application.UseCases.Book.Update;
@@ -22,14 +21,13 @@ builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(RegisterBookHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(GetAllBooksHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetBookByIdHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(DeleteBookHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(UpdateBookHandler).Assembly);
 });
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // passar para DbContextDependencyIjectionExtension
 builder.Services.AddDbContext<GerenciadorLivrariaDbContext>(options =>
