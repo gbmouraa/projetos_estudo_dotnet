@@ -2,7 +2,6 @@ using GerenciadorLivraria.API.Filters;
 using GerenciadorLivraria.Application;
 using GerenciadorLivraria.Application.UseCases.Book.Delete;
 using GerenciadorLivraria.Application.UseCases.Book.GetById;
-using GerenciadorLivraria.Application.UseCases.Book.Register;
 using GerenciadorLivraria.Application.UseCases.Book.Update;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using Microsoft.Data.Sqlite;
@@ -20,7 +19,6 @@ builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
 // passar para MediatRDependencyIjectionExtension
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(RegisterBookHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(GetBookByIdHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(DeleteBookHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(UpdateBookHandler).Assembly);

@@ -13,6 +13,12 @@ namespace GerenciadorLivraria.Infrastructure.DataBase.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task Add(BookEntity book)
+        {
+            await _dbContext.Books.AddAsync(book);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<List<BookEntity>> GetAll()
         {
             return await _dbContext.Books.AsNoTracking().ToListAsync();

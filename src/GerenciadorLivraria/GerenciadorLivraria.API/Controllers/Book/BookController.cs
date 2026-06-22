@@ -44,17 +44,9 @@ namespace GerenciadorLivraria.API.Controllers.Book
         [HttpPost]
         [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(RegisterBookResponse), StatusCodes.Status201Created)]
-        public async Task<ActionResult> Register([FromBody] RegisterBookRequest request)
+        public async Task<ActionResult> Register([FromBody] RegisterBookRequest request, [FromServices] IRegisterBookUseCase useCase)
         {
-            var command = new RegisterBookCommand
-            {
-                Title = request.Title,
-                Author = request.Author,
-                Price = request.Price,
-                Stock = request.Stock
-            };
-
-            var response = await _mediator.Send(command);
+            var response = await useCase.Execute(request);
             return Created(string.Empty, response);
         }
 
