@@ -77,7 +77,6 @@ namespace GerenciadorLivraria.API.Controllers.Book
         {
             var command = new UpdateBookCommand
             {
-                Id = id,
                 Title = request.Title,
                 Author = request.Author,
                 Price = request.Price,

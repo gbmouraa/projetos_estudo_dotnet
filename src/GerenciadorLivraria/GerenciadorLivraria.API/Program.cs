@@ -17,6 +17,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddSwaggerGen();
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
+// passar para MediatRDependencyIjectionExtension
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(RegisterBookHandler).Assembly);
@@ -26,19 +27,11 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(UpdateBookHandler).Assembly);
 });
 
-
+// passar para DbContextDependencyIjectionExtension
 builder.Services.AddDbContext<GerenciadorLivrariaDbContext>(options =>
 {
     var dbPath = Path.Combine(builder.Environment.ContentRootPath, "Data", "GerenciadorLivraria.db");
     var connection = new SqliteConnection($"Data Source={dbPath}");
-
-    connection.Open();
-
-    using var command = connection.CreateCommand();
-
-    command.CommandText = "PRAGMA foreign_keys = ON;";
-    command.ExecuteNonQuery();
-
     options.UseSqlite(connection);
 });
 

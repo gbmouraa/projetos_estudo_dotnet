@@ -1,6 +1,6 @@
 ﻿namespace GerenciadorLivraria.Domain.Enums
 {
-    public enum EnumGenre
+    public enum GeneroEnum
     {
         Romance = 1,
         Filosofia = 2,

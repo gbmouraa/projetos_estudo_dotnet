@@ -19,7 +19,9 @@ namespace GerenciadorLivraria.Application.Book.UpdateBook
         {
             Validate(request);
 
-            BookEntity? book = _dbContext.Books.FirstOrDefault(b => b.Id == request.Id);
+            var id = new Guid();
+
+            BookEntity? book = _dbContext.Books.FirstOrDefault(b => b.Id == id);
 
             if (book == null)
                 throw new NotFoundException("Livro não encontrado");

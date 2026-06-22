@@ -24,6 +24,7 @@ namespace GerenciadorLivraria.API.Filters
 
         private void ThrowUnknowError(ExceptionContext context)
         {
+            Console.WriteLine(context.Exception);
             context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Result = new ObjectResult(new ErrorMessageResponse("ERRO DESCONHECIDO"));
         }
