@@ -3,7 +3,7 @@ using GerenciadorLivraria.Infrastructure.DataBase;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace GerenciadorLivraria.Application.Book.GetAll
+namespace GerenciadorLivraria.Application.UseCases.Book.GetAll
 {
     public class GetAllBooksHandler : IRequestHandler<GetAllBooksQuery, List<BookResponse>>
     {

@@ -1,7 +1,7 @@
 ﻿using GerenciadorLivraria.Communication.Responses;
 using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.Register
+namespace GerenciadorLivraria.Application.UseCases.Book.Register
 {
     public class RegisterBookCommand : IRequest<RegisterBookResponse>
     {

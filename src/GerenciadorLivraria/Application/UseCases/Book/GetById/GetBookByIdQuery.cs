@@ -1,7 +1,7 @@
 ﻿using GerenciadorLivraria.Communication.Responses;
 using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.GetById
+namespace GerenciadorLivraria.Application.UseCases.Book.GetById
 {
     public class GetBookByIdQuery : IRequest<BookResponse>
     {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace GerenciadorLivraria.Application.Book.Register
+namespace GerenciadorLivraria.Application.UseCases.Book.Register
 {
     public class RegisterBookValidator : AbstractValidator<RegisterBookCommand>
     {

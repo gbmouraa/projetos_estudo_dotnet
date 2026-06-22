@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.Delete
+namespace GerenciadorLivraria.Application.UseCases.Book.Delete
 {
     public class DeleteBookCommand : IRequest<Unit>
     {

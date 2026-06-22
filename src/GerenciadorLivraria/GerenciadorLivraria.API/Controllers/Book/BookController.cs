@@ -1,9 +1,9 @@
 ﻿using GerenciadorLivraria.API.Responses;
-using GerenciadorLivraria.Application.Book.Delete;
-using GerenciadorLivraria.Application.Book.GetAll;
-using GerenciadorLivraria.Application.Book.GetById;
-using GerenciadorLivraria.Application.Book.Register;
-using GerenciadorLivraria.Application.Book.Update;
+using GerenciadorLivraria.Application.UseCases.Book.Delete;
+using GerenciadorLivraria.Application.UseCases.Book.GetAll;
+using GerenciadorLivraria.Application.UseCases.Book.GetById;
+using GerenciadorLivraria.Application.UseCases.Book.Register;
+using GerenciadorLivraria.Application.UseCases.Book.Update;
 using GerenciadorLivraria.Communication.Requests;
 using GerenciadorLivraria.Communication.Responses;
 using MediatR;
@@ -25,9 +25,9 @@ namespace GerenciadorLivraria.API.Controllers.Book
         [HttpGet]
         [ProducesResponseType(typeof(List<BookResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> GetAll()
+        public async Task<ActionResult> GetAll([FromServices] IGetAllBooksUseCase useCase)
         {
-            var response = await _mediator.Send(new GetAllBooksQuery());
+            var response = await useCase.Execute();
             return Ok(response);
         }
 

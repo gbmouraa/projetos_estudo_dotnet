@@ -1,11 +1,10 @@
-﻿using GerenciadorLivraria.Application.Book.GetById;
-using GerenciadorLivraria.Application.Common.Exceptions;
+﻿using GerenciadorLivraria.Application.Common.Exceptions;
 using GerenciadorLivraria.Communication.Responses;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.GetBookById
+namespace GerenciadorLivraria.Application.UseCases.Book.GetById
 {
     public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, BookResponse>
     {

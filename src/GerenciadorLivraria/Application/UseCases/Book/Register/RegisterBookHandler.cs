@@ -1,11 +1,11 @@
-﻿using GerenciadorLivraria.Application.Book.Register;
+﻿using GerenciadorLivraria.Application.UseCases.Book.Register;
 using GerenciadorLivraria.Application.Common.Exceptions;
 using GerenciadorLivraria.Communication.Responses;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.CreateBook
+namespace GerenciadorLivraria.Application.UseCases.Book.Register
 {
     public class RegisterBookHandler : IRequestHandler<RegisterBookCommand, RegisterBookResponse>
     {

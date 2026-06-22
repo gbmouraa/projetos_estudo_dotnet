@@ -1,10 +1,10 @@
-﻿using GerenciadorLivraria.Application.Book.Update;
+﻿using GerenciadorLivraria.Application.UseCases.Book.Update;
 using GerenciadorLivraria.Application.Common.Exceptions;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.UpdateBook
+namespace GerenciadorLivraria.Application.UseCases.Book.Update
 {
     public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, Unit>
     {

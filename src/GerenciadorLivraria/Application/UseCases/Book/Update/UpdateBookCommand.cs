@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.Update
+namespace GerenciadorLivraria.Application.UseCases.Book.Update
 {
     public class UpdateBookCommand : IRequest<Unit>
     {

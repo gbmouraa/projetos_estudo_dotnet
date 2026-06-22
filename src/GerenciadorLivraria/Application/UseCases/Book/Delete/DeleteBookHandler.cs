@@ -1,10 +1,9 @@
-﻿using GerenciadorLivraria.Application.Book.Delete;
-using GerenciadorLivraria.Application.Common.Exceptions;
+﻿using GerenciadorLivraria.Application.Common.Exceptions;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using MediatR;
 
-namespace GerenciadorLivraria.Application.Book.DeleteBook
+namespace GerenciadorLivraria.Application.UseCases.Book.Delete
 {
     public class DeleteBookHandler : IRequestHandler<DeleteBookCommand, Unit>
     {

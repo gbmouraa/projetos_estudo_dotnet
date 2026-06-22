@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace GerenciadorLivraria.Application.Book.Update
+namespace GerenciadorLivraria.Application.UseCases.Book.Update
 {
     public class UpdateBookValidator : AbstractValidator<UpdateBookCommand>
     {
