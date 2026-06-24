@@ -65,17 +65,9 @@ namespace GerenciadorLivraria.API.Controllers.Book
         [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] UpdateBookRequest request)
+        public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] UpdateBookRequest request, [FromServices] IUpdateBookUseCase useCase)
         {
-            var command = new UpdateBookCommand
-            {
-                Title = request.Title,
-                Author = request.Author,
-                Price = request.Price,
-                Stock = request.Stock
-            };
-
-            await _mediator.Send(command);
+            await useCase.Execute(request, id);
 
             return NoContent();
         }

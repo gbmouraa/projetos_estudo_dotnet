@@ -22,5 +22,15 @@ namespace GerenciadorLivraria.Infrastructure.DataBase.Repositories
         {
             return await _dbContext.Books.AsNoTracking().ToListAsync();
         }
+
+        public async Task<BookEntity?> GetById(Guid id)
+        {
+            return _dbContext.Books.FirstOrDefault(b => b.Id == id);
+        }
+
+        public void Update(BookEntity book)
+        {
+            _dbContext.Books.Update(book);
+        }
     }
 }

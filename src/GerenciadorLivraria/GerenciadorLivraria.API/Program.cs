@@ -2,7 +2,6 @@ using GerenciadorLivraria.API.Filters;
 using GerenciadorLivraria.Application;
 using GerenciadorLivraria.Application.UseCases.Book.Delete;
 using GerenciadorLivraria.Application.UseCases.Book.GetById;
-using GerenciadorLivraria.Application.UseCases.Book.Update;
 using GerenciadorLivraria.Infrastructure.DataBase;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +20,6 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetBookByIdHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(DeleteBookHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(UpdateBookHandler).Assembly);
 });
 
 builder.Services.AddApplication();

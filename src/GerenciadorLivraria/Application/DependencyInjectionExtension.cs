@@ -1,5 +1,6 @@
 ﻿using GerenciadorLivraria.Application.UseCases.Book.GetAll;
 using GerenciadorLivraria.Application.UseCases.Book.Register;
+using GerenciadorLivraria.Application.UseCases.Book.Update;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GerenciadorLivraria.Application
@@ -15,6 +16,7 @@ namespace GerenciadorLivraria.Application
         {
             service.AddScoped<IGetAllBooksUseCase, GetAllBooksUseCase>();
             service.AddScoped<IRegisterBookUseCase, RegisterBookUseCase>();
+            service.AddScoped<IUpdateBookUseCase, UpdateBookUseCase>();
         }
     }
 }
