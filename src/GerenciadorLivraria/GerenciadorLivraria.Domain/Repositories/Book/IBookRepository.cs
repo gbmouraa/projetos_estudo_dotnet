@@ -1,6 +1,6 @@
 ﻿using GerenciadorLivraria.Domain.Entities;
 
-namespace GerenciadorLivraria.Domain.Repositories
+namespace GerenciadorLivraria.Domain.Repositories.Book
 {
     public interface IBookRepository
     {

@@ -3,16 +3,19 @@ using GerenciadorLivraria.Communication.Requests;
 using GerenciadorLivraria.Communication.Responses;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Domain.Repositories;
+using GerenciadorLivraria.Domain.Repositories.Book;
 
 namespace GerenciadorLivraria.Application.UseCases.Book.Register
 {
     public class RegisterBookUseCase : IRegisterBookUseCase
     {
         private readonly IBookRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterBookUseCase(IBookRepository repository)
+        public RegisterBookUseCase(IBookRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<RegisterBookResponse> Execute(RegisterBookRequest request)
@@ -30,6 +33,8 @@ namespace GerenciadorLivraria.Application.UseCases.Book.Register
             };
 
             await _repository.Add(book);
+            await _unitOfWork.Commit();
+
             return new RegisterBookResponse { Id = book.Id, Title = book.Title };
         }
 

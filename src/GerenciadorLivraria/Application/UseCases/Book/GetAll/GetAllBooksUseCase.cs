@@ -1,12 +1,12 @@
 ﻿using GerenciadorLivraria.Communication.Responses;
 using GerenciadorLivraria.Domain.Repositories;
+using GerenciadorLivraria.Domain.Repositories.Book;
 
 namespace GerenciadorLivraria.Application.UseCases.Book.GetAll
 {
     public class GetAllBooksUseCase : IGetAllBooksUseCase
     {
         // mapper 
-        // commit
         private readonly IBookRepository _repository;
 
         public GetAllBooksUseCase(IBookRepository repository)

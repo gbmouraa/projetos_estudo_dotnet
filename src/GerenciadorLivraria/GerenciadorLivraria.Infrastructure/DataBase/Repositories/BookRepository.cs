@@ -1,5 +1,5 @@
 ﻿using GerenciadorLivraria.Domain.Entities;
-using GerenciadorLivraria.Domain.Repositories;
+using GerenciadorLivraria.Domain.Repositories.Book;
 using Microsoft.EntityFrameworkCore;
 
 namespace GerenciadorLivraria.Infrastructure.DataBase.Repositories
@@ -16,7 +16,6 @@ namespace GerenciadorLivraria.Infrastructure.DataBase.Repositories
         public async Task Add(BookEntity book)
         {
             await _dbContext.Books.AddAsync(book);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<List<BookEntity>> GetAll()

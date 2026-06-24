@@ -1,4 +1,5 @@
 ﻿using GerenciadorLivraria.Domain.Repositories;
+using GerenciadorLivraria.Domain.Repositories.Book;
 using GerenciadorLivraria.Infrastructure.DataBase.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace GerenciadorLivraria.Infrastructure.DataBase
         private static void AddRepositories(IServiceCollection services)
         {
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
