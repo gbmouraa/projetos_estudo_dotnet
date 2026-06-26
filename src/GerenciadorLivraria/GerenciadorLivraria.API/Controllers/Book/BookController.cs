@@ -35,9 +35,9 @@ namespace GerenciadorLivraria.API.Controllers.Book
         [Route("{id}")]
         [ProducesResponseType(typeof(BookResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> GetById([FromRoute] Guid id)
+        public async Task<ActionResult> GetById([FromRoute] Guid id, [FromServices] IGetBookByIdUseCase useCase)
         {
-            var response = await _mediator.Send(new GetBookByIdQuery { Id = id });
+            var response = await useCase.Execute(id);
             return Ok(response);
         }
 
