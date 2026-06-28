@@ -1,6 +1,7 @@
 ﻿using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Domain.Repositories.Book;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 
 namespace GerenciadorLivraria.Infrastructure.DataBase.Repositories
 {
@@ -31,6 +32,16 @@ namespace GerenciadorLivraria.Infrastructure.DataBase.Repositories
         public void Update(BookEntity book)
         {
             _dbContext.Books.Update(book);
+        }
+
+        public async Task<bool> Delete(Guid id)
+        {
+            var result = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == id);
+
+            if (result is null) return false;
+
+            _dbContext.Books.Remove(result);
+            return true;
         }
     }
 }

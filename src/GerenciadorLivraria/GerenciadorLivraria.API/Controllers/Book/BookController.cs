@@ -6,7 +6,6 @@ using GerenciadorLivraria.Application.UseCases.Book.Register;
 using GerenciadorLivraria.Application.UseCases.Book.Update;
 using GerenciadorLivraria.Communication.Requests;
 using GerenciadorLivraria.Communication.Responses;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorLivraria.API.Controllers.Book
@@ -15,13 +14,6 @@ namespace GerenciadorLivraria.API.Controllers.Book
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public BookController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpGet]
         [ProducesResponseType(typeof(List<BookResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -54,9 +46,9 @@ namespace GerenciadorLivraria.API.Controllers.Book
         [Route("{id}")]
         [ProducesResponseType(typeof(ErrorMessageResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Delete([FromRoute] Guid id)
+        public async Task<ActionResult> Delete([FromRoute] Guid id, [FromServices] IDeleteBookUseCase useCase)
         {
-            await _mediator.Send(new DeleteBookCommand { Id = id });
+            await useCase.Execute(id);
             return NoContent();
         }
 

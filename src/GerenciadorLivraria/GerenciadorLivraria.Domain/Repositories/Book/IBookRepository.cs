@@ -8,5 +8,6 @@ namespace GerenciadorLivraria.Domain.Repositories.Book
         Task<BookEntity?> GetById(Guid id);
         Task Add(BookEntity book);
         void Update(BookEntity book);
+        Task<bool> Delete(Guid id);
     }
 }

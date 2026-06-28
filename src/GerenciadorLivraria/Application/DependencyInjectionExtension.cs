@@ -1,4 +1,5 @@
-﻿using GerenciadorLivraria.Application.UseCases.Book.GetAll;
+﻿using GerenciadorLivraria.Application.UseCases.Book.Delete;
+using GerenciadorLivraria.Application.UseCases.Book.GetAll;
 using GerenciadorLivraria.Application.UseCases.Book.GetById;
 using GerenciadorLivraria.Application.UseCases.Book.Register;
 using GerenciadorLivraria.Application.UseCases.Book.Update;
@@ -19,6 +20,7 @@ namespace GerenciadorLivraria.Application
             service.AddScoped<IRegisterBookUseCase, RegisterBookUseCase>();
             service.AddScoped<IUpdateBookUseCase, UpdateBookUseCase>();
             service.AddScoped<IGetBookByIdUseCase, GetBookByIdUseCase>();
+            service.AddScoped<IDeleteBookUseCase, DeleteBookUseCase>();
         }
     }
 }
