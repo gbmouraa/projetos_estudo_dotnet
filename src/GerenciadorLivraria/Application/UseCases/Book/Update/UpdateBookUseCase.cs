@@ -1,4 +1,5 @@
-﻿using GerenciadorLivraria.Application.Common.Exceptions;
+﻿using AutoMapper;
+using GerenciadorLivraria.Application.Common.Exceptions;
 using GerenciadorLivraria.Communication.Requests;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Domain.Repositories;
@@ -10,10 +11,12 @@ namespace GerenciadorLivraria.Application.UseCases.Book.Update
     {
         private readonly IBookRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
-        public UpdateBookUseCase(IBookRepository bookRepository, IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public UpdateBookUseCase(IBookRepository bookRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _repository = bookRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task Execute(UpdateBookRequest request, Guid id)
@@ -25,10 +28,7 @@ namespace GerenciadorLivraria.Application.UseCases.Book.Update
             if (book == null)
                 throw new NotFoundException("Livro não encontrado");
 
-            book.Title = request.Title;
-            book.Author = request.Author;
-            book.Price = request.Price;
-            book.Stock = request.Stock;
+            _mapper.Map(request, book);
             book.UpdatedAt = DateTime.Now;
 
             _repository.Update(book);

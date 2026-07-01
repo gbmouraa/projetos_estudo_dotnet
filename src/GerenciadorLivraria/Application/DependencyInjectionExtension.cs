@@ -1,4 +1,5 @@
-﻿using GerenciadorLivraria.Application.UseCases.Book.Delete;
+﻿using GerenciadorLivraria.Application.AutoMapper;
+using GerenciadorLivraria.Application.UseCases.Book.Delete;
 using GerenciadorLivraria.Application.UseCases.Book.GetAll;
 using GerenciadorLivraria.Application.UseCases.Book.GetById;
 using GerenciadorLivraria.Application.UseCases.Book.Register;
@@ -12,6 +13,7 @@ namespace GerenciadorLivraria.Application
         public static void AddApplication(this IServiceCollection service)
         {
             AddUseCases(service);
+            AddAutoMapper(service);
         }
 
         private static void AddUseCases(IServiceCollection service)
@@ -21,6 +23,11 @@ namespace GerenciadorLivraria.Application
             service.AddScoped<IUpdateBookUseCase, UpdateBookUseCase>();
             service.AddScoped<IGetBookByIdUseCase, GetBookByIdUseCase>();
             service.AddScoped<IDeleteBookUseCase, DeleteBookUseCase>();
+        }
+
+        private static void AddAutoMapper(IServiceCollection service)
+        {
+            service.AddAutoMapper(cfg => cfg.AddProfile<AutoMapping>());
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using GerenciadorLivraria.Application.Common.Exceptions;
-using GerenciadorLivraria.Domain.Entities;
+﻿using AutoMapper;
+using GerenciadorLivraria.Application.Common.Exceptions;
+using GerenciadorLivraria.Communication.Responses;
 using GerenciadorLivraria.Domain.Repositories.Book;
 
 namespace GerenciadorLivraria.Application.UseCases.Book.GetById
@@ -7,19 +8,21 @@ namespace GerenciadorLivraria.Application.UseCases.Book.GetById
     public class GetBookByIdUseCase : IGetBookByIdUseCase
     {
         private readonly IBookRepository _repository;
+        private readonly IMapper _mapper;
 
-        public GetBookByIdUseCase(IBookRepository repository)
+        public GetBookByIdUseCase(IBookRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
-        public Task<BookEntity?> Execute(Guid id)
+        public async Task<BookResponse> Execute(Guid id)
         {
-            var result = _repository.GetById(id);
+            var book = await _repository.GetById(id);
 
-            if (result is null) throw new NotFoundException("Livro não encontrado.");
+            if (book is null) throw new NotFoundException("Livro não encontrado.");
 
-            return result;
+            return _mapper.Map<BookResponse>(book);
         }
     }
 }

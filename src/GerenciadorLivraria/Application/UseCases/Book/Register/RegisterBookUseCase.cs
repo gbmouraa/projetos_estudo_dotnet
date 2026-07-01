@@ -1,4 +1,5 @@
-﻿using GerenciadorLivraria.Application.Common.Exceptions;
+﻿using AutoMapper;
+using GerenciadorLivraria.Application.Common.Exceptions;
 using GerenciadorLivraria.Communication.Requests;
 using GerenciadorLivraria.Communication.Responses;
 using GerenciadorLivraria.Domain.Entities;
@@ -11,31 +12,25 @@ namespace GerenciadorLivraria.Application.UseCases.Book.Register
     {
         private readonly IBookRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public RegisterBookUseCase(IBookRepository repository, IUnitOfWork unitOfWork)
+        public RegisterBookUseCase(IBookRepository repository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<RegisterBookResponse> Execute(RegisterBookRequest request)
         {
             Validate(request);
 
-            BookEntity book = new BookEntity // mapper
-            {
-                Id = new Guid(),
-                Title = request.Title,
-                Author = request.Author,
-                Price = request.Price,
-                Stock = request.Stock,
-                CreatedAt = DateTime.Now,
-            };
+            var book = _mapper.Map<BookEntity>(request);
 
             await _repository.Add(book);
             await _unitOfWork.Commit();
 
-            return new RegisterBookResponse { Id = book.Id, Title = book.Title };
+            return _mapper.Map<RegisterBookResponse>(book);
         }
 
         public void Validate(RegisterBookRequest request)
